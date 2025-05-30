@@ -17,10 +17,7 @@ class SplashPage extends StatelessWidget {
             colors: AppColors.purpleGradient,
           ),
         ),
-        child: Text(
-          'Construtech',
-          style: AppTextStyle.bigText.copyWith(color: AppColors.white),
-        ),
+        child: Image.asset('assets/images/Construtech_logo.png'),
       ),
     );
   }

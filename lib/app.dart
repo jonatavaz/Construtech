@@ -1,3 +1,4 @@
+import 'package:construtech/features/onboarding/onboarding_page.dart';
 import 'package:construtech/features/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: SplashPage(),
+      home: OnrboardingPage(),
     );
   }
 }
