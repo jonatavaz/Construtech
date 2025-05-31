@@ -1,25 +1,25 @@
-
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
-  final VoidCallback? onPressed;
+  final VoidCallback? onPressed ;
   final String text;
 
-  const PrimaryButton({
-    super.key,
-    this.onPressed,
-    required this.text,
-  });
+  const PrimaryButton({super.key, this.onPressed, required this.text});
+
+  final BorderRadius _borderRadius = const BorderRadius.all(
+    Radius.circular(22.0),
+  );
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      borderRadius: BorderRadius.all(Radius.circular(38.0)),
+      borderRadius: _borderRadius,
       child: Ink(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(38.0)),
+        height: 48.0,
+        decoration: BoxDecoration(
+          borderRadius: _borderRadius,
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -27,19 +27,12 @@ class PrimaryButton extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(38.0)),
+          borderRadius: _borderRadius,
           onTap: onPressed,
-          child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(3.0)),
-            ),
-            alignment: Alignment.center,
-            height: 56.0,
+          child: Align(
             child: Text(
               text,
-              style: AppTextStyle.mediumText18.copyWith(
-                color: AppColors.white,
-              ),
+              style: AppTextStyle.mediumText18.copyWith(color: AppColors.white),
             ),
           ),
         ),
