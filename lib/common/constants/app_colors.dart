@@ -3,9 +3,9 @@ import 'dart:ui';
 class AppColors {
   AppColors._();
 
-  static const Color purpleOne = Color(0xFF6259CA);
+  static const Color purpleOne = Color(0xFF842CEA);
   static const List<Color> purpleGradient = [
-    Color(0xFF6259CA),
+    Color(0xFF842CEA),
     Color(0xFFADA1EA),
   ];
 
