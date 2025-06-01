@@ -1,3 +1,4 @@
+import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
 import 'package:construtech/features/sign_up/sign_up_page.dart';
 import 'package:construtech/features/splash/splash_page.dart';
@@ -9,7 +10,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: SignUpPage(),
+      initialRoute: NamedRoute.splash,
+      routes: {
+        NamedRoute.initial:(context) => const OnboardingPage(),
+        NamedRoute.splash: (context) => const SplashPage(),
+        NamedRoute.signUp: (context) => const SignUpPage(),
+      },
     );
   }
 }

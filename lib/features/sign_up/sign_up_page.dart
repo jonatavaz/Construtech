@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/utils/validator.dart';
+import 'package:construtech/common/widgets/custom_buttom_sheet.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
 import 'package:construtech/features/sign_up/sign_up_controller.dart';
 import 'package:construtech/features/sign_up/sign_up_state.dart';
+import 'package:construtech/services/mock_auth_service.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -20,9 +22,20 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
-
+  final _nomeController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _controller = SignUpController();
+
+  final _controller = SignUpController(MockAuthService());
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -32,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
         showDialog(
           context: context,
           builder: (context) =>
-              const Center(child: CircularProgressIndicator()),
+              const Center(child: CircularProgressIndicator(color: AppColors.purpleOne,)),
         );
       }
       if (_controller.state is SignUpSuccessState) {
@@ -41,12 +54,19 @@ class _SignUpPageState extends State<SignUpPage> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                Scaffold(body: Center(child: Text("Nova Tela"))),
+                Scaffold(body: Center(child: Text("DashBoard"))),
           ),
         );
       }
+      if (_controller.state is SignUpErrorState) {
+        final error = (_controller.state as SignUpErrorState).message;
+        Navigator.pop(context);
+        customModalBottomSheet(context, SignUpError(message: error));
+      }
     });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +95,14 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: [
                 CustomTextFormField(
+                  controller: _nomeController,
                   labelText: "Nome",
                   hintText: "Digite seu nome",
                   textCapitalization: TextCapitalization.words,
                   validator: Validator.validateName,
                 ),
                 CustomTextFormField(
+                  controller: _emailController,
                   labelText: "Email",
                   hintText: "email@email.com",
                   validator: Validator.validateEmail,
@@ -118,7 +140,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     _formKey.currentState != null &&
                     _formKey.currentState!.validate();
                 if (valid) {
-                  _controller.doSignUp();
+                  _controller.SignUp(Nome: _nomeController.text, Email: _emailController.text, Senha: _passwordController.text,);
                 } else {
                   log("Erro ao logar");
                 }

@@ -1,9 +1,13 @@
 import 'dart:developer';
 
 import 'package:construtech/features/sign_up/sign_up_state.dart';
+import 'package:construtech/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
 class SignUpController extends ChangeNotifier {
+  final AuthServices _services;
+  SignUpController(this._services);
+
   SignUpState _state = SignUpInitialState();
 
   SignUpState get state => _state;
@@ -13,11 +17,17 @@ class SignUpController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> doSignUp() async{
+  Future<void> SignUp({
+    required String Nome,
+    required String Email,
+    required String Senha,
+  }) async {
     _changeState(SignUpLoadingState());
-    await Future.delayed(Duration(seconds: 2));
-    log("Usuário Logado");
-    _changeState(SignUpSuccessState());
-    return true;
+    await _services.signUp(Nome: Nome, Email: Email, Senha: Senha);
+    try {
+      _changeState(SignUpSuccessState());
+    } catch (e) {
+      _changeState(SignUpErrorState(e.toString()));
+    }
   }
 }
