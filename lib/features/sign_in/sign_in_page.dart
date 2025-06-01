@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
@@ -8,26 +9,26 @@ import 'package:construtech/common/widgets/custom_buttom_sheet.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
-import 'package:construtech/features/sign_up/sign_up_controller.dart';
-import 'package:construtech/features/sign_up/sign_up_state.dart';
+import 'package:construtech/features/sign_in/sign_in_controller.dart';
+import 'package:construtech/features/sign_in/sign_in_state.dart';
 import 'package:construtech/locator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final _controller = locator.get<SignUpController>();
+  final _controller = locator.get<SignInController>();
 
   @override
   void dispose() {
@@ -45,8 +46,9 @@ class _SignUpPageState extends State<SignUpPage> {
       if (_controller.state is SignInLoadingState) {
         showDialog(
           context: context,
-          builder: (context) =>
-              const Center(child: CircularProgressIndicator(color: AppColors.purpleOne,)),
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(color: AppColors.purpleOne),
+          ),
         );
       }
       if (_controller.state is SignInSuccessState) {
@@ -60,14 +62,12 @@ class _SignUpPageState extends State<SignUpPage> {
         );
       }
       if (_controller.state is SignInErrorState) {
-        final error = (_controller.state as SignInErrorState).message;
+        //final error = (_controller.state as SignInErrorState);
         Navigator.pop(context);
-        customModalBottomSheet(context, SignInError(message: error));
+        customModalBottomSheet(context, SignInError(message: "Erro"));
       }
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 25.0),
             child: Text(
-              'Criar conta',
+              'Entrar',
               textAlign: TextAlign.center,
               style: AppTextStyle.mediumText.copyWith(
                 color: AppColors.purpleOne,
@@ -96,13 +96,6 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: [
                 CustomTextFormField(
-                  controller: _nomeController,
-                  labelText: "Nome",
-                  hintText: "Digite seu nome",
-                  textCapitalization: TextCapitalization.words,
-                  validator: Validator.validateName,
-                ),
-                CustomTextFormField(
                   controller: _emailController,
                   labelText: "Email",
                   hintText: "email@email.com",
@@ -113,16 +106,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   labelText: "Senha",
                   hintText: "******",
                   validator: Validator.validatePassword,
-                  helperText:
-                      "Sua senha deve conter no minimo 8 caracteres, contendo Maiuscula, Minuscula e número",
-                ),
-                PasswordFormField(
-                  labelText: "Confirme sua senha",
-                  hintText: "******",
-                  validator: (value) => Validator.validateConfirmPassword(
-                    value,
-                    _passwordController.text,
-                  ),
                 ),
               ],
             ),
@@ -135,13 +118,16 @@ class _SignUpPageState extends State<SignUpPage> {
               bottom: 4.0,
             ),
             child: PrimaryButton(
-              text: "Criar agora",
+              text: "Entar",
               onPressed: () {
                 final valid =
                     _formKey.currentState != null &&
                     _formKey.currentState!.validate();
                 if (valid) {
-                  _controller.SignUp(Nome: _nomeController.text, Email: _emailController.text, Senha: _passwordController.text,);
+                  _controller.SignIn(
+                    Email: _emailController.text,
+                    Senha: _passwordController.text,
+                  );
                 } else {
                   log("Erro ao logar");
                 }
@@ -162,17 +148,19 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => Navigator.pushReplacementNamed(context, NamedRoute.signIn),
+      onPressed: () => Navigator.pushReplacementNamed(context, NamedRoute.signUp),
       child: RichText(
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Possui uma conta? ',
+              text: 'Não possui uma conta? ',
               style: AppTextStyle.smallText.copyWith(color: AppColors.purple),
-              recognizer: TapGestureRecognizer()..onTap = () => log('message'),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () =>
+                    Navigator.popAndPushNamed(context, NamedRoute.signUp),
             ),
             TextSpan(
-              children: [TextSpan(text: 'Login')],
+              children: [TextSpan(text: 'Criar agora')],
               style: AppTextStyle.smallText.copyWith(
                 color: AppColors.purpleOne,
               ),

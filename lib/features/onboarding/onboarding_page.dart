@@ -50,7 +50,7 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => log('tap'),
+      onPressed: () => Navigator.pushReplacementNamed(context, NamedRoute.signIn),
       child: RichText(
         text: TextSpan(
           children: [

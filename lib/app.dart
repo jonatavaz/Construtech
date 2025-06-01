@@ -1,5 +1,6 @@
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
+import 'package:construtech/features/sign_in/sign_in_page.dart';
 import 'package:construtech/features/sign_up/sign_up_page.dart';
 import 'package:construtech/features/splash/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class App extends StatelessWidget {
         NamedRoute.initial:(context) => const OnboardingPage(),
         NamedRoute.splash: (context) => const SplashPage(),
         NamedRoute.signUp: (context) => const SignUpPage(),
+        NamedRoute.signIn: (context) => const SignInPage(),
       },
     );
   }

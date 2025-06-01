@@ -2,18 +2,18 @@ import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
 import 'package:flutter/material.dart';
 
-class SignUpError {
+class SignInError {
    final String message;
    final String? code; // Talvez um código de erro
 
-   SignUpError({required this.message, this.code});
+   SignInError({required this.message, this.code});
 }
 
 
 Future<dynamic> customModalBottomSheet(
   BuildContext context,
   // --- ALTERAÇÃO AQUI: Adicionar o parâmetro para o objeto de erro ---
-  SignUpError errorState, // Adicione o parâmetro do tipo SignUpErrorState
+  SignInError errorState, // Adicione o parâmetro do tipo SignUpErrorState
 ) {
   return showModalBottomSheet(
     context: context,

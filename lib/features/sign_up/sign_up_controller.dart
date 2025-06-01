@@ -22,12 +22,12 @@ class SignUpController extends ChangeNotifier {
     required String Email,
     required String Senha,
   }) async {
-    _changeState(SignUpLoadingState());
+    _changeState(SignInLoadingState());
     await _services.signUp(Nome: Nome, Email: Email, Senha: Senha);
     try {
-      _changeState(SignUpSuccessState());
+      _changeState(SignInSuccessState());
     } catch (e) {
-      _changeState(SignUpErrorState(e.toString()));
+      _changeState(SignInErrorState(e.toString()));
     }
   }
 }
