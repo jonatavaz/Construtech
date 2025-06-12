@@ -24,7 +24,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
+  final _cpfController = TextEditingController();
+  final _nascimentoController = TextEditingController();
   final _emailController = TextEditingController();
+  final _telefoneController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final _controller = locator.get<SignUpController>();
@@ -32,7 +35,10 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void dispose() {
     _nomeController.dispose();
+    _cpfController.dispose();
+    _nascimentoController.dispose();
     _emailController.dispose();
+    _telefoneController.dispose();
     _passwordController.dispose();
     _controller.dispose();
     super.dispose();
@@ -45,8 +51,9 @@ class _SignUpPageState extends State<SignUpPage> {
       if (_controller.state is SignInLoadingState) {
         showDialog(
           context: context,
-          builder: (context) =>
-              const Center(child: CircularProgressIndicator(color: AppColors.purpleOne,)),
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(color: AppColors.purpleOne),
+          ),
         );
       }
       if (_controller.state is SignInSuccessState) {
@@ -66,8 +73,6 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -103,9 +108,29 @@ class _SignUpPageState extends State<SignUpPage> {
                   validator: Validator.validateName,
                 ),
                 CustomTextFormField(
+                  controller: _cpfController,
+                  labelText: "CPF",
+                  hintText: "Digite seu CPF",
+                  textCapitalization: TextCapitalization.words,
+                  validator: Validator.validateName,
+                ),
+                CustomTextFormField(
+                  controller: _nascimentoController,
+                  labelText: "Nascimento",
+                  hintText: "Digite sua data",
+                  textCapitalization: TextCapitalization.words,
+                  validator: Validator.validateName,
+                ),
+                CustomTextFormField(
                   controller: _emailController,
                   labelText: "Email",
                   hintText: "email@email.com",
+                  validator: Validator.validateEmail,
+                ),
+                CustomTextFormField(
+                  controller: _telefoneController,
+                  labelText: "Telefone",
+                  hintText: "32 99999-9999",
                   validator: Validator.validateEmail,
                 ),
                 PasswordFormField(
@@ -141,7 +166,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     _formKey.currentState != null &&
                     _formKey.currentState!.validate();
                 if (valid) {
-                  _controller.SignUp(Nome: _nomeController.text, Email: _emailController.text, Senha: _passwordController.text,);
+                  _controller.SignUp(
+                    context: context,
+                    Nome: _nomeController.text,
+                    CPF: _cpfController.text,
+                    Nascimento: _nascimentoController.text,
+                    Telefone: _telefoneController.text,
+                    Email: _emailController.text,
+                    Senha: _passwordController.text,
+                  );
                 } else {
                   log("Erro ao logar");
                 }
@@ -162,7 +195,8 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => Navigator.pushReplacementNamed(context, NamedRoute.signIn),
+      onPressed: () =>
+          Navigator.pushReplacementNamed(context, NamedRoute.signIn),
       child: RichText(
         text: TextSpan(
           children: [

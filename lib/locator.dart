@@ -10,5 +10,5 @@ void setupDependences() {
   locator.registerLazySingleton<AuthServices>(() => MockAuthService());
 
   locator.registerFactory<SignInController>(()=> SignInController(locator.get<AuthServices>()));
-  locator.registerFactory<SignUpController>(()=> SignUpController(locator.get<AuthServices>()));
+   locator.registerFactory<SignUpController>(()=> SignUpController());
 }

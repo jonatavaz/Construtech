@@ -6,7 +6,7 @@ class Pessoa extends Usuario{
   final int? CodPessoa;
   final String? Nome;
   final String? CPF;
-  final DateTime? Nascimento; 
+  final String? Nascimento; 
 
   Pessoa({
     int? CodUsuaio,
