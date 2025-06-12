@@ -33,23 +33,16 @@ class SignUpController extends ChangeNotifier {
     print('URL final da API: $url');
 
     final Map<String, dynamic> body = {
-     
       "Nome": Nome,
       "CPF": CPF,
       "Nascimento": Nascimento,
-      "Telefone": Telefone,
-      "Email": Email,
-      "Senha": Senha,
-      "Administrador": false, 
-      "Ativo": true
+      "Usuario": {"Senha": Senha},
+      "Contato": {"Telefone1": Telefone, "Email": Email},
     };
+    print('body: $body');
 
     try {
-      await HelperAPI.postData(
-        context,
-        url,
-        body,
-      );
+      await HelperAPI.postData(context, url, body);
       _changeState(SignInSuccessState());
     } catch (e) {
       _changeState(SignInErrorState(e.toString()));
