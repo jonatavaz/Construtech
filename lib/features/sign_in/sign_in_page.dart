@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
@@ -25,7 +24,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _cpfController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final _controller = locator.get<SignInController>();
@@ -33,7 +32,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void dispose() {
     _nomeController.dispose();
-    _emailController.dispose();
+    _cpfController.dispose();
     _passwordController.dispose();
     _controller.dispose();
     super.dispose();
@@ -96,9 +95,9 @@ class _SignInPageState extends State<SignInPage> {
             child: Column(
               children: [
                 CustomTextFormField(
-                  controller: _emailController,
-                  labelText: "Email",
-                  hintText: "email@email.com",
+                  controller: _cpfController,
+                  labelText: "CPF",
+                  hintText: "Digite seu CPF",
                   validator: Validator.validateEmail,
                 ),
                 PasswordFormField(
@@ -125,7 +124,8 @@ class _SignInPageState extends State<SignInPage> {
                     _formKey.currentState!.validate();
                 if (valid) {
                   _controller.SignIn(
-                    Email: _emailController.text,
+                    context: context,
+                    CPF: _cpfController.text,
                     Senha: _passwordController.text,
                   );
                 } else {
@@ -148,7 +148,8 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => Navigator.pushReplacementNamed(context, NamedRoute.signUp),
+      onPressed: () =>
+          Navigator.pushReplacementNamed(context, NamedRoute.signUp),
       child: RichText(
         text: TextSpan(
           children: [

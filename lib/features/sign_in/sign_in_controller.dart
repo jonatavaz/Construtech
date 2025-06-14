@@ -1,34 +1,40 @@
 import 'dart:developer';
+import 'package:construtech/common/constants/app_url.dart';
+import 'package:construtech/common/utils/HelperAPI.dart';
 import 'package:construtech/features/sign_in/sign_in_state.dart';
-import 'package:construtech/features/sign_up/sign_up_state.dart' hide SignInLoadingState, SignInSuccessState, SignInErrorState;
+import 'package:construtech/features/sign_up/sign_up_state.dart'
+    hide SignInLoadingState, SignInSuccessState, SignInErrorState;
 import 'package:construtech/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
-class SignInController extends ChangeNotifier{
-  final AuthServices _services;
-  SignInController(this._services);
+class SignInController extends ChangeNotifier {
+  //£final AuthServices _services;
+  SignInController();
 
   SignInState _state = SignInInitialState();
 
-
   SignInState get state => _state;
 
-  void _changeState(SignInState newState){
+  void _changeState(SignInState newState) {
     _state = newState;
     notifyListeners();
   }
 
   Future<void> SignIn({
-    required String Email,
+    required BuildContext context,
+    required String CPF,
     required String Senha,
   }) async {
     _changeState(SignInLoadingState());
-    await _services.signIn(Email: Email, Senha: Senha);
+    final url =
+        '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetPessoa/{CPF, Senha}?CPF=$CPF&Senha=$Senha';
+
+    print(url);
     try {
+      await HelperAPI.getData(context, url);
       _changeState(SignInSuccessState());
     } catch (e) {
       _changeState(SignInErrorState(e.toString()));
     }
   }
-
 }
