@@ -57,14 +57,15 @@ class _SignUpPageState extends State<SignUpPage> {
         );
       }
       if (_controller.state is SignInSuccessState) {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                Scaffold(body: Center(child: Text("DashBoard"))),
-          ),
-        );
+        // Navigator.pop(context);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) =>
+        //         Scaffold(body: Center(child: Text("DashBoard"))),
+        //   ),
+        // );
+        Navigator.pushReplacementNamed(context, NamedRoute.signIn);
       }
       if (_controller.state is SignInErrorState) {
         final error = (_controller.state as SignInErrorState).message;

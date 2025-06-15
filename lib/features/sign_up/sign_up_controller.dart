@@ -4,6 +4,7 @@ import 'package:construtech/common/constants/app_url.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
 import 'package:construtech/features/sign_up/sign_up_state.dart';
 import 'package:construtech/services/auth_services.dart';
+import 'package:construtech/services/secure_storage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpController extends ChangeNotifier {
@@ -28,6 +29,7 @@ class SignUpController extends ChangeNotifier {
     required String Email,
     required String Senha,
   }) async {
+    final secureStorage = const SecureStorage();
     _changeState(SignInLoadingState());
     final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/InsertPessoa';
     print('URL final da API: $url');
