@@ -67,7 +67,7 @@ class HelperAPI {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         if (responseData['nascimento'] != null) {
-          showAlerts(context, 'Bem vindo ao APP ${responseData['nome']}!');
+          showAlerts(context, 'Bem vindo ao APP gostosão ${responseData['nome']}!');
         }
         return responseData;
       } else if (response.statusCode == 404) {

@@ -8,6 +8,7 @@ import 'package:construtech/common/widgets/custom_buttom_sheet.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
+import 'package:construtech/features/home/home_page.dart';
 import 'package:construtech/features/sign_in/sign_in_controller.dart';
 import 'package:construtech/features/sign_in/sign_in_state.dart';
 import 'package:construtech/locator.dart';
@@ -52,16 +53,9 @@ class _SignInPageState extends State<SignInPage> {
       }
       if (_controller.state is SignInSuccessState) {
         Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                Scaffold(body: Center(child: Text("DashBoard"))),
-          ),
-        );
+        Navigator.pushReplacementNamed(context, NamedRoute.home);
       }
       if (_controller.state is SignInErrorState) {
-        //final error = (_controller.state as SignInErrorState);
         Navigator.pop(context);
         customModalBottomSheet(context, SignInError(message: "Erro"));
       }

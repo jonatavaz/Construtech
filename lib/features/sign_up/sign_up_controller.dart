@@ -29,8 +29,7 @@ class SignUpController extends ChangeNotifier {
     required String Email,
     required String Senha,
   }) async {
-    final secureStorage = const SecureStorage();
-    _changeState(SignInLoadingState());
+    
     final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/InsertPessoa';
     print('URL final da API: $url');
 

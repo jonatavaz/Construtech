@@ -1,5 +1,6 @@
 import 'package:construtech/common/models/pessoa.dart';
 import 'package:construtech/services/auth_services.dart';
+import 'package:construtech/services/mock_auth_service.dart' as _auth;
 
 class MockAuthService implements AuthServices {
   @override
@@ -37,6 +38,20 @@ class MockAuthService implements AuthServices {
       throw 'Não foi possível criar a conta.';
     }
   }
+  
+  @override
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+@override
+Future<void> signOut() async{
+  
 }
 
 class WeakPasswordException {

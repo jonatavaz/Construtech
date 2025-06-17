@@ -11,4 +11,6 @@ abstract class AuthServices {
     required String Email,
     required String Senha,
   });
+
+  Future<void> signOut();
 }
