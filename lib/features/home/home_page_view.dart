@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/widgets/custom_bottom_app_bar.dart';
 import 'package:construtech/features/home/home_page.dart';
+import 'package:construtech/features/materials/materials_page.dart';
 import 'package:construtech/features/payments/payments_page.dart';
+import 'package:construtech/features/person/person_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -34,9 +36,9 @@ class _HomePageViewState extends State<HomePageView> {
         controller: pageController,
         children: const [
           HomePage(),
+          MaterialsPage(),
           PaymentsPage(),
-          // WelletPage(),
-          // ProfilePage(),
+          PersonPage(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -53,26 +55,26 @@ class _HomePageViewState extends State<HomePageView> {
         children: [
           CustomBottomAppBarItem(
             label: 'Home',
-            primaryIcon: Icons.home,
-            secondaryIcon: Icons.home_outlined,
+            primaryIcon: Icons.home_work_outlined,
+            secondaryIcon: Icons.home_work_outlined,
             onPressed: () => pageController.jumpToPage(0),
           ),
           CustomBottomAppBarItem(
-            label: 'Statis',
-            primaryIcon: Icons.analytics,
-            secondaryIcon: Icons.analytics_outlined,
+            label: 'Materials',
+            primaryIcon: Icons.handyman_outlined,
+            secondaryIcon: Icons.handyman_outlined,
             onPressed: () => pageController.jumpToPage(1),
           ),
           CustomBottomAppBarItem(
             label: 'payments',
-            primaryIcon: Icons.account_balance_wallet,
+            primaryIcon: Icons.account_balance_wallet_outlined,
             secondaryIcon: Icons.account_balance_wallet_outlined,
             onPressed: () => pageController.jumpToPage(2),
           ),
           CustomBottomAppBarItem(
             label: 'profile',
-            primaryIcon: Icons.person,
-            secondaryIcon: Icons.person_outlined,
+            primaryIcon: Icons.group_add_outlined,
+            secondaryIcon: Icons.group_add_outlined,
             onPressed: () => pageController.jumpToPage(3),
           ),
         ],

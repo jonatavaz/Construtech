@@ -1,16 +1,18 @@
 import 'dart:developer';
+import 'dart:nativewrappers/_internal/vm/lib/async_patch.dart';
 
 import 'package:construtech/common/constants/routes.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class PersonPage extends StatefulWidget {
+  const PersonPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PersonPage> createState() => _PersonPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PersonPageState extends State<PersonPage> {
+  
   @override
   void dispose() {
     log('disposed');
@@ -19,17 +21,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    
     super.initState();
     log('init');
     //timer;
   }
 
+  //Timer timer = Timer(const Duration(seconds: 2), () => log('finished'));
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(body: Center(
-       child: Text("DashBoard"),
+       child: Text("Person"),
     ));
   }
 }

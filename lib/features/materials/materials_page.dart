@@ -3,14 +3,19 @@ import 'dart:developer';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MaterialsPage extends StatefulWidget {
+  const MaterialsPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MaterialsPage> createState() => _MaterialsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MaterialsPageState extends State<MaterialsPage>
+with AutomaticKeepAliveClientMixin<MaterialsPage>{
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void dispose() {
     log('disposed');
@@ -23,13 +28,11 @@ class _HomePageState extends State<HomePage> {
     log('init');
     //timer;
   }
-
-
   @override
   Widget build(BuildContext context) {
-    
+    super.build(context);
     return Scaffold(body: Center(
-       child: Text("DashBoard"),
+       child: Text("Materiais"),
     ));
   }
 }
