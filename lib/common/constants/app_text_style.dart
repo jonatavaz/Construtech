@@ -28,5 +28,9 @@ class AppTextStyle {
     fontSize: 14.0,
     fontWeight: FontWeight.w700,
   );
-  
+  static const TextStyle smallText13 = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 12.0,
+    fontWeight: FontWeight.w500,
+  );
 }

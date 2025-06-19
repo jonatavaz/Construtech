@@ -10,11 +10,9 @@ class MaterialsPage extends StatefulWidget {
   State<MaterialsPage> createState() => _MaterialsPageState();
 }
 
-class _MaterialsPageState extends State<MaterialsPage>
-with AutomaticKeepAliveClientMixin<MaterialsPage>{
+class _MaterialsPageState extends State<MaterialsPage>{
 
-  @override
-  bool get wantKeepAlive => true;
+ 
 
   @override
   void dispose() {
@@ -30,7 +28,7 @@ with AutomaticKeepAliveClientMixin<MaterialsPage>{
   }
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+
     return Scaffold(body: Center(
        child: Text("Materiais"),
     ));

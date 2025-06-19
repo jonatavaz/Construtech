@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:nativewrappers/_internal/vm/lib/async_patch.dart';
 
 import 'package:construtech/common/constants/routes.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class _PersonPageState extends State<PersonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Center(
-       child: Text("Person"),
+       child: Text("Fornecedores"),
     ));
   }
 }
