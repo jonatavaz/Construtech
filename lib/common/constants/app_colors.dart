@@ -11,5 +11,5 @@ class AppColors {
 
   static const Color white = Color(0xFFFFFFFF);
   static const Color whitePurple = const Color.fromARGB(255, 245, 245, 248);
-  static const Color purple = Color.fromARGB(255, 71, 67, 90);
+  static const Color purple = Color(0xFF000000);
 }
