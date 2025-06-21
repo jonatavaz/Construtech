@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 class CustomBottomAppBar extends StatefulWidget {
   final Color? selectedItemColor;
   final List<CustomBottomAppBarItem> children;
+   final int currentIndex; // NOVO: Índice atual selecionado
+  final ValueChanged<int> onItemSelected;
 
   const CustomBottomAppBar({
     Key? key,
     this.selectedItemColor,
     required this.children,
-  }) : assert(children.length == 4, 'children.length must be 5'),
+    required this.currentIndex, // Requer o índice atual
+    required this.onItemSelected,
+  }) : assert(children.length == 5, 'children.length must be 5'),
        super(key: key);
 
   @override
@@ -19,26 +23,30 @@ class CustomBottomAppBar extends StatefulWidget {
 class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
   int _selectedItemIndex = 0;
 
-  @override
+    @override
   Widget build(BuildContext context) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: widget.children.map((item) {
-          final currentItem =
-              widget.children.indexOf(item) == _selectedItemIndex;
+          final int itemIndex = widget.children.indexOf(item);
+          // Usa widget.currentIndex que vem do pai
+          final bool isSelected = itemIndex == widget.currentIndex; 
+
           return Expanded(
             child: InkWell(
-              onTap: item.onPressed,
-              onTapUp: (_) => setState(() {
-                _selectedItemIndex = widget.children.indexOf(item);
-              }),
+              onTap: item.onPressed == null ? null : () {
+                // Notifica o widget pai sobre o item selecionado
+                widget.onItemSelected(itemIndex); 
+                // E executa a ação original do item (navegação de página)
+                item.onPressed?.call();
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Icon(
-                  currentItem ? item.primaryIcon : item.secondaryIcon,
-                  color: currentItem
+                  isSelected ? item.primaryIcon : item.secondaryIcon,
+                  color: isSelected
                       ? widget.selectedItemColor
                       : AppColors.purple,
                 ),

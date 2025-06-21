@@ -1,9 +1,13 @@
 import 'package:construtech/common/constants/routes.dart';
+import 'package:construtech/features/home/home_form_page.dart';
 import 'package:construtech/features/home/home_page.dart';
 import 'package:construtech/features/home/home_page_view.dart';
+import 'package:construtech/features/materials/materials_form_page.dart';
 import 'package:construtech/features/materials/materials_page.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
+import 'package:construtech/features/payments/payments_form_page.dart';
 import 'package:construtech/features/payments/payments_page.dart';
+import 'package:construtech/features/person/person_form_page.dart';
 import 'package:construtech/features/person/person_page.dart';
 import 'package:construtech/features/sign_in/sign_in_page.dart';
 import 'package:construtech/features/sign_up/sign_up_page.dart';
@@ -26,6 +30,10 @@ class App extends StatelessWidget {
         NamedRoute.payments: (context) => const PaymentsPage(),
         NamedRoute.materials: (context) => const MaterialsPage(),
         NamedRoute.person: (context) => const PersonPage(),
+        NamedRoute.homeFormPage: (context) => const HomeFormPage(),
+        NamedRoute.materialsFormPage: (context) => const MaterialsFormPage(),
+        NamedRoute.paymentsFormPage: (context) => const PaymentsFormPage(),
+        NamedRoute.personFormPage: (context) => const PersonFormPage(),
       },
     );
   }
