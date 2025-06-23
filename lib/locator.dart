@@ -12,5 +12,6 @@ void setupDependences() {
 
   locator.registerFactory<SignInController>(() => SignInController());
   locator.registerFactory<SignUpController>(() => SignUpController());
-  locator.registerFactory<HomeController>(() => HomeController());
+  locator.registerFactory<HomeController>(() => HomeController()); 
+  //locator.registerFactory<HomeFormController>(() => HomeFormController()); 
 }
