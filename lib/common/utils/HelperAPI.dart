@@ -69,6 +69,7 @@ class HelperAPI {
         if (responseData['nascimento'] != null) {
           showAlerts(context, 'Bem vindo ao APP ${responseData['nome']}!');
         }
+        print(responseData);
         return responseData;
       } else if (response.statusCode == 404) {
         showAlerts(

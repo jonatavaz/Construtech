@@ -1,6 +1,5 @@
 class AppUrl {
-  static const String baseUrl =
-      'https://construtech.igprojetohub.targetbr.biz/';
+  static const String baseUrl = 'http://191.252.220.13/';
 
   static const String construtechApiPath = 'construtechApi';
 
