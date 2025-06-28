@@ -1,11 +1,18 @@
 import 'dart:developer';
 
-import 'package:construtech/app.dart';
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
+import 'package:construtech/features/home/home_controller.dart';
+import 'package:construtech/features/home/home_page_view.dart';
+import 'package:construtech/common/models/obra.dart';
+import 'package:construtech/common/utils/ui_utils.dart';
+import 'package:construtech/locator.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +25,19 @@ class _HomePageState extends State<HomePage> {
   double get textScaleFactor =>
       MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
   double get iconSize => MediaQuery.of(context).size.width < 360 ? 16.0 : 24.0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<HomeController>(context, listen: false).GetObras(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +101,6 @@ class _HomePageState extends State<HomePage> {
                         Icons.person_outline_outlined,
                         color: AppColors.white,
                       ),
-                      // Container(width: 8.w, height: 8.w,decoration: BoxDecoration(color: AppC),,)],
                     ],
                   ),
                 ),
@@ -114,29 +133,40 @@ class _HomePageState extends State<HomePage> {
                               color: AppColors.white,
                             ),
                           ),
-                          Text(
-                            '10',
-                            textScaleFactor: textScaleFactor,
-                            style: AppTextStyle.mediumText20.apply(
-                              color: AppColors.white,
-                            ),
+                          // Use o Consumer para exibir o total de obras
+                          Consumer<HomeController>(
+                            builder: (context, controller, child) {
+                              return Text(
+                                controller.obras.length.toString(),
+                                textScaleFactor: textScaleFactor,
+                                style: AppTextStyle.mediumText20.apply(
+                                  color: AppColors.white,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
                       GestureDetector(
                         onTap: () => log('options'),
-                        child: PopupMenuButton(
+                        child: PopupMenuButton<String>(
                           padding: EdgeInsets.zero,
                           child: const Icon(
                             Icons.more_horiz,
-                            color: Colors.white,
+                            color: AppColors.white,
                           ),
                           itemBuilder: (context) => [
-                            const PopupMenuItem(
+                            const PopupMenuItem<String>(
+                              value: 'search_by_date',
                               height: 24.0,
                               child: Text('Pesquisa por data'),
                             ),
                           ],
+                          onSelected: (value) {
+                            if (value == 'search_by_date') {
+                              log('Pesquisa por data selecionada');
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -145,26 +175,39 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(4.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.white.withOpacity(0.06),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print('Botão Fase final clicado!');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.purple.withOpacity(0.06),
+                            foregroundColor: AppColors.white,
+                            padding: const EdgeInsets.all(12.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
                             ),
-                            child: Icon(
-                              Icons.imagesearch_roller_outlined,
-                              color: AppColors.white,
-                              size: iconSize,
-                            ),
+                            elevation: 0,
                           ),
-                          const SizedBox(width: 4.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              Container(
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: BoxDecoration(
+                                  color: AppColors.purple.withOpacity(0.06),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.imagesearch_roller_outlined,
+                                  color: AppColors.purple,
+                                  size: iconSize,
+                                ),
+                              ),
+                              const SizedBox(height: 8.0),
                               Text(
                                 'Fase final',
                                 textScaleFactor: textScaleFactor,
@@ -172,54 +215,70 @@ class _HomePageState extends State<HomePage> {
                                   color: AppColors.white,
                                 ),
                               ),
+                              const SizedBox(height: 4.0),
                               Text(
                                 '2',
                                 textScaleFactor: textScaleFactor,
                                 style: AppTextStyle.mediumText18.apply(
-                                  color: AppColors.white,
+                                  color: AppColors.purple,
                                 ),
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(4.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.white.withOpacity(0.06),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
+                      const SizedBox(width: 16.0),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print('Botão Início obra clicado!');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.purple.withOpacity(0.06),
+                            foregroundColor: AppColors.white,
+                            padding: const EdgeInsets.all(12.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
                             ),
-                            child: Icon(
-                              Icons.construction,
-                              color: AppColors.white,
-                              size: iconSize,
-                            ),
+                            elevation: 0,
                           ),
-                          const SizedBox(width: 4.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              Container(
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: BoxDecoration(
+                                  color: AppColors.purple.withOpacity(0.06),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.construction,
+                                  color: AppColors.purple,
+                                  size: iconSize,
+                                ),
+                              ),
+                              const SizedBox(height: 8.0),
                               Text(
-                                'Inicio obra',
+                                'Início obra',
                                 textScaleFactor: textScaleFactor,
                                 style: AppTextStyle.smallText.apply(
                                   color: AppColors.white,
                                 ),
                               ),
+                              const SizedBox(height: 4.0),
                               Text(
                                 '8',
                                 textScaleFactor: textScaleFactor,
                                 style: AppTextStyle.mediumText18.apply(
-                                  color: AppColors.white,
+                                  color: AppColors.purple,
                                 ),
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -228,14 +287,14 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Positioned(
-            top: 397.h,
+            top: 450.h,
             left: 0,
             right: 0,
             bottom: 0,
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
@@ -243,42 +302,108 @@ class _HomePageState extends State<HomePage> {
                         'Listagem de obras',
                         style: AppTextStyle.mediumText18,
                       ),
-                       Text('Dias para a entrega',
-                       style: AppTextStyle.smallText13,),
+                      Text(
+                        'Dias para a entrega',
+                        style: AppTextStyle.smallText13,
+                      ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      final color = index % 2 == 0 ? Colors.green : Colors.red;
-                      final value = index % 2 == 0 ? "100 dias" : " 720 dias";
-                      return ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
-                        leading: Container(
-                          decoration: const BoxDecoration(
-                            color: AppColors.whitePurple,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Icon(Icons.home_work_outlined),
-                        ),
-                        title: const Text(
-                          'Prédio LGA',
-                          style: AppTextStyle.smallText,
-                        ),
-                        subtitle: const Text('19/06/2025', style: AppTextStyle.smallText13,),
-                        trailing: Text(value, style: AppTextStyle.mediumText18.apply(color: color),),
+                Consumer<HomeController>(
+                  builder: (context, controller, child) {
+                    if (controller.state is HomeLoadingState) {
+                      return const Expanded(
+                        child: Center(child: CircularProgressIndicator()),
                       );
-                    },
-                  ),
+                    } else if (controller.state is HomeErrorState) {
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            'Erro ao carregar obras: ${(controller.state as HomeErrorState).message}',
+                            style: AppTextStyle.smallText.apply(
+                              color: Colors.red,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    } else if (controller.state is HomeSuccessState &&
+                        controller.obras.isEmpty) {
+                      return const Expanded(
+                        child: Center(
+                          child: Text(
+                            'Nenhuma obra cadastrada ainda.',
+                            style: AppTextStyle.smallText,
+                          ),
+                        ),
+                      );
+                    } else if (controller.state is HomeSuccessState) {
+                      return Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: controller.obras.length,
+                          itemBuilder: (context, index) {
+                            final obra = controller.obras[index];
+                            final color = index % 2 == 0
+                                ? Colors.green
+                                : Colors.red;
+                            String diasParaEntrega = "N/A";
+                            try {
+                              List<String> dateParts = obra.prazoExecucao.split(
+                                '/',
+                              );
+                              DateTime? prazoDate = DateTime.tryParse(
+                                '${dateParts[2]}-${dateParts[1]}-${dateParts[0]}',
+                              );
+                              if (prazoDate != null) {
+                                final Duration remaining = prazoDate.difference(
+                                  DateTime.now(),
+                                );
+                                diasParaEntrega = '${remaining.inDays} dias';
+                              }
+                            } catch (e) {
+                              log(
+                                'Erro ao parsear data de prazo: ${obra.prazoExecucao}',
+                              );
+                            }
+                            return ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              leading: Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.whitePurple,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: const Icon(Icons.home_work_outlined),
+                              ),
+                              title: Text(
+                                obra.nomeObra,
+                                style: AppTextStyle.smallText,
+                              ),
+                              subtitle: Text(
+                                obra.prazoExecucao,
+                                style: AppTextStyle.smallText13,
+                              ),
+                              trailing: Text(
+                                diasParaEntrega,
+                                style: AppTextStyle.mediumText18.apply(
+                                  color: color,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Expanded(
+                      child: Center(child: Text('Iniciando...')),
+                    );
+                  },
                 ),
               ],
             ),
