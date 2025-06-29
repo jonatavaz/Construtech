@@ -4,6 +4,7 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
+import 'package:construtech/features/equipamento/equipamento_page.dart';
 import 'package:construtech/features/home/home_controller.dart';
 import 'package:construtech/features/home/home_page_view.dart';
 import 'package:construtech/common/models/obra.dart';
@@ -216,12 +217,16 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               const SizedBox(height: 4.0),
-                              Text(
-                                '2',
-                                textScaleFactor: textScaleFactor,
-                                style: AppTextStyle.mediumText18.apply(
-                                  color: AppColors.purple,
-                                ),
+                              Consumer<HomeController>(
+                                builder: (context, controller, child) {
+                                  return Text(
+                                    controller.obras.length.toString(),
+                                    textScaleFactor: textScaleFactor,
+                                    style: AppTextStyle.mediumText18.apply(
+                                      color: AppColors.purple,
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -269,12 +274,16 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               const SizedBox(height: 4.0),
-                              Text(
-                                '8',
-                                textScaleFactor: textScaleFactor,
-                                style: AppTextStyle.mediumText18.apply(
-                                  color: AppColors.purple,
-                                ),
+                              Consumer<HomeController>(
+                                builder: (context, controller, child) {
+                                  return Text(
+                                    controller.obras.length.toString(),
+                                    textScaleFactor: textScaleFactor,
+                                    style: AppTextStyle.mediumText18.apply(
+                                      color: AppColors.purple,
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -368,6 +377,15 @@ class _HomePageState extends State<HomePage> {
                               );
                             }
                             return ListTile(
+                              // --- AQUI ESTÁ A LÓGICA DO CLIQUE ---
+                              onTap: () {
+                                // Quando o usuário clicar, navegue para a EquipamentoFormPage
+                                // e passe o objeto `obra` como um argumento.
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  NamedRoute.equipamentoPage,
+                                );
+                              },
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 8.0,
                               ),

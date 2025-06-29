@@ -6,8 +6,8 @@ import 'package:construtech/features/home/home_form_state.dart';
 import 'package:construtech/services/secure_storage.dart';
 import 'package:flutter/material.dart';
 
-class HomeFormController extends ChangeNotifier {
-  HomeFormController();
+class MaterialsFormController extends ChangeNotifier {
+  MaterialsFormController();
 
   HomeFormState _state = HomeFormInitialState();
 

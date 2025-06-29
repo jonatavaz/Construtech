@@ -1,4 +1,5 @@
 import 'package:construtech/common/constants/routes.dart';
+import 'package:construtech/features/equipamento/equipamento_page.dart';
 import 'package:construtech/features/home/home_controller.dart';
 import 'package:construtech/features/home/home_form_page.dart';
 import 'package:construtech/features/home/home_page.dart';
@@ -40,6 +41,7 @@ class App extends StatelessWidget {
         NamedRoute.materialsFormPage: (context) => const MaterialsFormPage(),
         NamedRoute.paymentsFormPage: (context) => const PaymentsFormPage(),
         NamedRoute.personFormPage: (context) => const PersonFormPage(),
+        NamedRoute.equipamentoPage: (context) => const EquipamentoPage(),
       },
     );
   }

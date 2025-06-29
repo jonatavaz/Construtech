@@ -22,7 +22,7 @@ class HomePageView extends StatefulWidget {
 
 class _HomePageViewState extends State<HomePageView> {
   final pageController = PageController();
-  int _pageIndex = 0; 
+  int _pageIndex = 0;
 
   @override
   void initState() {
@@ -47,33 +47,35 @@ class _HomePageViewState extends State<HomePageView> {
     String formTitle = '';
 
     switch (_pageIndex) {
-      case 0: 
+      case 0:
         formPage = const HomeFormPage();
         formTitle = 'Cadastrar Obras';
         break;
-      case 1: 
-        formPage = const MaterialsFormPage(); 
+      case 1:
+        formPage = const MaterialsFormPage();
         formTitle = 'Cadastrar Materiais';
         break;
-      case 2: 
-        formPage = const PaymentsFormPage(); 
+      case 2:
+        formPage = const PaymentsFormPage();
         formTitle = 'Registrar Pagamento';
         break;
-      case 3: 
-        formPage = const PersonFormPage(); 
+      case 3:
+        formPage = const PersonFormPage();
         formTitle = 'Cadastrar Pessoa';
         break;
       default:
-        formPage = const Center(child: Text('Nenhum formulário disponível para esta página.'));
+        formPage = const Center(
+          child: Text('Nenhum formulário disponível para esta página.'),
+        );
         formTitle = 'Formulário';
     }
 
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, 
+      isScrollControlled: true,
       builder: (BuildContext ctx) {
         return Container(
-          height: MediaQuery.of(ctx).size.height * 0.9, 
+          height: MediaQuery.of(ctx).size.height * 0.9,
           padding: const EdgeInsets.all(16.0),
           child: formPage,
         );
@@ -92,7 +94,6 @@ class _HomePageViewState extends State<HomePageView> {
           MaterialsPage(),
           PaymentsPage(),
           PersonPage(),
-          
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -100,17 +101,17 @@ class _HomePageViewState extends State<HomePageView> {
         onPressed: () => _showFormForCurrentPage(context),
         child: const Icon(Icons.add),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100.0)
+          borderRadius: BorderRadius.circular(100.0),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomAppBar(
         selectedItemColor: AppColors.purpleOne,
-        currentIndex: _pageIndex, 
-        onItemSelected: (index) { 
+        currentIndex: _pageIndex,
+        onItemSelected: (index) {
           setState(() {
-            _pageIndex = index; 
-            pageController.jumpToPage(index); 
+            _pageIndex = index;
+            pageController.jumpToPage(index);
           });
         },
         children: [
@@ -126,9 +127,9 @@ class _HomePageViewState extends State<HomePageView> {
             secondaryIcon: Icons.handyman_outlined,
             onPressed: () => pageController.jumpToPage(1),
           ),
-          CustomBottomAppBarItem.empty(), 
+          CustomBottomAppBarItem.empty(),
           CustomBottomAppBarItem(
-            label: 'Payments', 
+            label: 'Payments',
             primaryIcon: Icons.account_balance_wallet_outlined,
             secondaryIcon: Icons.account_balance_wallet_outlined,
             onPressed: () => pageController.jumpToPage(2),

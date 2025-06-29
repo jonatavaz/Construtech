@@ -2,23 +2,24 @@ import 'dart:developer';
 
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
+import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
 import 'package:construtech/features/home/home_form_controller.dart';
+import 'package:construtech/features/home/home_form_state.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
 import 'package:construtech/locator.dart';
 import 'package:flutter/material.dart';
 
 class HomeFormPage extends StatefulWidget {
-  
-  const HomeFormPage({super.key, });
+  const HomeFormPage({super.key});
 
   @override
   State<HomeFormPage> createState() => _HomeFormPageState();
 }
 
-class _HomeFormPageState extends State<HomeFormPage>{
+class _HomeFormPageState extends State<HomeFormPage> {
   final _formKey = GlobalKey<FormState>();
   final _nomeClienteController = TextEditingController();
   final _nomeObraController = TextEditingController();
@@ -29,6 +30,28 @@ class _HomeFormPageState extends State<HomeFormPage>{
   final _detalhesController = TextEditingController();
 
   final _controller = locator.get<HomeFormController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.state is HomeFormLoadingState) {
+        showDialog(
+          context: context,
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(color: AppColors.purpleOne),
+          ),
+        );
+      }
+      if (_controller.state is HomeFormSuccessState) {
+        Navigator.pushReplacementNamed(context, NamedRoute.home);
+      }
+      if (_controller.state is HomeFormErrorState) {
+        final error = (_controller.state as HomeFormErrorState).message;
+        Navigator.pop(context);
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -57,13 +80,6 @@ class _HomeFormPageState extends State<HomeFormPage>{
               ),
             ),
           ),
-          // SizedBox(
-          //   height: 180,
-          //   child: Image.asset(
-          //     'assets/images/Sign_up.png',
-          //     fit: BoxFit.contain,
-          //   ),
-          // ),
           Form(
             key: _formKey,
             child: Column(
@@ -135,7 +151,7 @@ class _HomeFormPageState extends State<HomeFormPage>{
                     TipoObra: _tipoObraController.text,
                     PrazoExecucao: _prazoController.text,
                     EstagioAtual: _estagioController.text,
-                    Detalhes: _detalhesController.text, 
+                    Detalhes: _detalhesController.text,
                   );
                 } else {
                   log("Erro ao logar");

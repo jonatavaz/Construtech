@@ -99,7 +99,6 @@ class HelperAPI {
     BuildContext context,
     String url,
   ) async {
-    log('HelperAPI.getListData: Iniciando requisição para: $url');
     try {
       final response = await http
           .get(
@@ -110,19 +109,12 @@ class HelperAPI {
             const Duration(seconds: 10),
             onTimeout: () {
               throw TimeoutException(
-                'A requisição demorou demais para responder. Verifique sua conexão com a internet ou o status do servidor.',
+                'A requisição demorou demais para responder.',
               );
             },
           );
-
-      log(
-        'HelperAPI.getListData: Requisição concluída. Status Code: ${response.statusCode}',
-      );
-      log('HelperAPI.getListData: Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
         if (response.body.isEmpty) {
-          log('HelperAPI.getListData: Corpo da resposta vazio.');
           showAlerts(context, 'Nenhum dado retornado pela API.');
           return [];
         }
@@ -131,11 +123,7 @@ class HelperAPI {
           final List<dynamic> responseData = json.decode(response.body);
           return responseData;
         } catch (e) {
-          log('HelperAPI.getListData: Erro ao decodificar JSON: $e');
-          showAlerts(
-            context,
-            'Erro ao processar dados recebidos. Formato inválido.',
-          );
+          showAlerts(context, 'Erro ao processar dados recebidos');
           return null;
         }
       } else {
@@ -143,29 +131,14 @@ class HelperAPI {
             'Erro ao buscar dados. Código: ${response.statusCode}';
         try {
           final Map<String, dynamic> responseData = json.decode(response.body);
-          // Tenta pegar a mensagem de erro do JSON de resposta
           errorMessage = responseData['message'] ?? errorMessage;
         } catch (_) {
-          log(
-            'HelperAPI.getListData: Não foi possível decodificar o corpo do erro para o código ${response.statusCode}.',
-          );
+          log('Erro no corpo do código ${response.statusCode}.');
         }
         showAlerts(context, errorMessage);
         return null;
       }
-    } on TimeoutException catch (e) {
-      log('HelperAPI.getListData: Erro de Timeout: $e');
-      showAlerts(context, "e.message");
-      return null;
-    } on SocketException catch (e) {
-      log('HelperAPI.getListData: Erro de Rede (SocketException): $e');
-      showAlerts(
-        context,
-        'Sem conexão com a internet ou servidor indisponível. Verifique sua rede.',
-      );
-      return null;
     } catch (e) {
-      log('HelperAPI.getListData: Erro genérico: $e');
       showAlerts(context, 'Ocorreu um erro inesperado: $e');
       return null;
     }
