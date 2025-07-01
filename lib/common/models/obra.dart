@@ -1,16 +1,14 @@
-// lib/common/models/obra.dart
-
 class Obra {
   final int codObra;
   final int codCliente;
-  final String? nomeCliente; // Pode ser null, como no seu retorno
+  final String? nomeCliente;
   final String
-  nomeObra; // Renomeado de 'nome' para 'nomeObra' para evitar conflito
+  nomeObra;
   final String endereco;
-  final String tipo; // Tipo da obra (Casa/Prédio)
+  final String tipo;
   final String prazoExecucao;
   final String estagioAtual;
-  final String? detalhes; // Pode ser null
+  final String? detalhes; 
 
   Obra({
     required this.codObra,
@@ -28,14 +26,14 @@ class Obra {
     return Obra(
       codObra: json['codObra'] as int,
       codCliente: json['codCliente'] as int,
-      nomeCliente: json['nomeCliente'] as String?, // É anulável na API
+      nomeCliente: json['nomeCliente'] as String?,
       nomeObra:
-          json['nomeObra'] as String, // Corresponde à coluna Nome AS NomeObra
+          json['nomeObra'] as String, 
       endereco: json['endereco'] as String,
       tipo: json['tipo'] as String,
       prazoExecucao: json['prazoExecucao'] as String,
       estagioAtual: json['estagioAtual'] as String,
-      detalhes: json['detalhes'] as String?, // É anulável na API
+      detalhes: json['detalhes'] as String?, 
     );
   }
 

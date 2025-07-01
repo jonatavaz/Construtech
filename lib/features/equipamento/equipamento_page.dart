@@ -28,7 +28,6 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
   void initState() {
     super.initState();
     log('init');
-    //timer;
   }
 
   @override
@@ -65,7 +64,7 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Materiais',
+                      'Equipamentos',
                       textScaleFactor: textScaleFactor,
                       style: AppTextStyle.mediumText20.apply(
                         color: AppColors.white,
@@ -73,155 +72,9 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                     ),
                   ],
                 ),
-                // Container(
-                //   padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                //   decoration: BoxDecoration(
-                //     borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                //     color: AppColors.white.withOpacity(0.06),
-                //   ),
-                //   child: Stack(
-                //     alignment: const AlignmentDirectional(0.5, -0.5),
-                //     children: [
-                //       const Icon(
-                //         Icons.person_outline_outlined,
-                //         color: AppColors.white,
-                //       ),
-                //       // Container(width: 8.w, height: 8.w,decoration: BoxDecoration(color: AppC),,)],
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
-          //Positioned(
-          // left: 0.w,
-          // right: 0.w,
-          // top: 180.h,
-          //child: Container(
-          // padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 34.h),
-          // decoration: const BoxDecoration(
-          //   color: AppColors.white,
-          //   borderRadius: BorderRadius.all(Radius.circular(24.0)),
-          // ),
-          // child: Column(
-          //   children: [
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   children: [
-          //     Column(
-          //       crossAxisAlignment: CrossAxisAlignment.center,
-          //       children: [
-          //         Text(
-          //           'Total a Pagar',
-          //           textScaleFactor: textScaleFactor,
-          //           style: AppTextStyle.smallText.apply(
-          //             color: AppColors.purple,
-          //           ),
-          //         ),
-          //         Text(
-          //           '\$ 500,90',
-          //           textScaleFactor: textScaleFactor,
-          //           style: AppTextStyle.mediumText20.apply(
-          //             color: AppColors.purple,
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(height: 24.0),
-          // Row(
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   children: [
-          //     Expanded(
-          //       child: ElevatedButton(
-          //         onPressed: () {
-          //           print('Botão Depósitos clicado!');
-          //         },
-          //         style: ElevatedButton.styleFrom(
-          //           backgroundColor: AppColors.purple.withOpacity(0.06),
-          //           foregroundColor: AppColors.purple,
-          //           padding: const EdgeInsets.all(10.0),
-          //           shape: RoundedRectangleBorder(
-          //             borderRadius: BorderRadius.circular(16.0),
-          //           ),
-          //           elevation: 0,
-          //         ),
-          //         child: Column(
-          //           mainAxisSize: MainAxisSize.min,
-          //           crossAxisAlignment: CrossAxisAlignment.center,
-          //           children: [
-          //             Row(
-          //               children: [
-          //                 Icon(
-          //                   Icons.arrow_downward,
-          //                   color: AppColors.purple,
-          //                   size: iconSize,
-          //                 ),
-          //                 const SizedBox(width: 10.0),
-          //                 Text(
-          //                   'Depósitos',
-          //                   textScaleFactor: textScaleFactor,
-          //                   style: AppTextStyle.smallText.apply(
-          //                     color: AppColors.purple,
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-
-          //             const SizedBox(height: 4.0),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          // const SizedBox(width: 16.0),
-
-          //             Expanded(
-          //               child: ElevatedButton(
-          //                 onPressed: () {
-          //                   print('Botão Início obra clicado!');
-          //                 },
-          //                 style: ElevatedButton.styleFrom(
-          //                   backgroundColor: AppColors.purple.withOpacity(0.06),
-          //                   foregroundColor: AppColors.white,
-          //                   padding: const EdgeInsets.all(12.0),
-          //                   shape: RoundedRectangleBorder(
-          //                     borderRadius: BorderRadius.circular(16.0),
-          //                   ),
-          //                   elevation: 0,
-          //                 ),
-          //                 child: Column(
-          //                   mainAxisSize: MainAxisSize.min,
-          //                   crossAxisAlignment: CrossAxisAlignment.center,
-          //                   children: [
-          //                     Row(
-          //                       children: [
-          //                         Icon(
-          //                           Icons.arrow_upward,
-          //                           color: AppColors.purple,
-          //                           size: iconSize,
-          //                         ),
-          //                         const SizedBox(width: 10.0),
-          //                         Text(
-          //                           'Transação',
-          //                           textScaleFactor: textScaleFactor,
-          //                           style: AppTextStyle.smallText.apply(
-          //                             color: AppColors.purple,
-          //                           ),
-          //                         ),
-          //                       ],
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          // ],
-          //),
-          //),
-          //),
           Positioned(
             top: 397.h,
             left: 0,
