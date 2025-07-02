@@ -1,6 +1,6 @@
 abstract class MaterialsFormState {}
 
-class MateriaslFormInitialState extends MaterialsFormState {}
+class MaterialsFormInitialState extends MaterialsFormState {}
 
 class MaterialsFormLoadingState extends MaterialsFormState {}
 

@@ -12,6 +12,7 @@ import 'package:construtech/features/materials/materials_form_controller.dart';
 import 'package:construtech/features/materials/materials_form_state.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
 import 'package:construtech/locator.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 
 class MaterialsFormPage extends StatefulWidget {
@@ -23,13 +24,9 @@ class MaterialsFormPage extends StatefulWidget {
 
 class _MaterialsFormPageState extends State<MaterialsFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nomeClienteController = TextEditingController();
+  final _quantidadeController = TextEditingController();
+  final _nomeController = TextEditingController();
   final _nomeObraController = TextEditingController();
-  final _enderecoController = TextEditingController();
-  final _tipoObraController = TextEditingController();
-  final _prazoController = TextEditingController();
-  final _estagioController = TextEditingController();
-  final _detalhesController = TextEditingController();
 
   final _controller = locator.get<MaterialsFormController>();
 
@@ -57,12 +54,9 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
 
   @override
   void dispose() {
-    _nomeClienteController.dispose();
+    _quantidadeController.dispose();
+    _nomeController.dispose();
     _nomeObraController.dispose();
-    _enderecoController.dispose();
-    _tipoObraController.dispose();
-    _prazoController.dispose();
-    _detalhesController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -87,39 +81,18 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
             child: Column(
               children: [
                 CustomTextFormField(
-                  controller: _nomeClienteController,
-                  labelText: "Nome do Cliente",
-                  hintText: "Nome Sobrenome",
+                  controller: _quantidadeController,
+                  labelText: "Quantidade",
+                ),
+                CustomTextFormField(
+                  controller: _nomeController,
+                  labelText: "Nome Material",
+                  hintText: "Nome",
                 ),
                 CustomTextFormField(
                   controller: _nomeObraController,
                   labelText: "Nome da Obra",
                   hintText: "Nome",
-                ),
-                CustomTextFormField(
-                  controller: _enderecoController,
-                  labelText: "Endereço",
-                  hintText: "Rua: exemplo 121",
-                ),
-                CustomTextFormField(
-                  controller: _tipoObraController,
-                  labelText: "Tipo da obra",
-                  hintText: "Casa/Prédio",
-                ),
-                CustomTextFormField(
-                  controller: _prazoController,
-                  labelText: "Prazo Execução",
-                  hintText: "exemplo",
-                ),
-                CustomTextFormField(
-                  controller: _estagioController,
-                  labelText: "Estágio Atual",
-                  hintText: "Acabamento/Alicerce",
-                ),
-                CustomTextFormField(
-                  controller: _detalhesController,
-                  labelText: "Detalhes",
-                  hintText: "exemplo",
                 ),
               ],
             ),
@@ -138,15 +111,11 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
                     _formKey.currentState != null &&
                     _formKey.currentState!.validate();
                 if (valid) {
-                  _controller.InsertObra(
+                  _controller.InsertMaterias(
                     context: context,
-                    NomeCliente: _nomeClienteController.text,
+                    Quantidade: int.parse(_quantidadeController.text),
+                    Nome: _nomeController.text,
                     NomeObra: _nomeObraController.text,
-                    Endereco: _enderecoController.text,
-                    TipoObra: _tipoObraController.text,
-                    PrazoExecucao: _prazoController.text,
-                    EstagioAtual: _estagioController.text,
-                    Detalhes: _detalhesController.text,
                   );
                 } else {
                   log("Erro ao logar");

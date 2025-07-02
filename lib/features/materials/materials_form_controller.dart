@@ -3,50 +3,44 @@ import 'dart:math';
 import 'package:construtech/common/constants/app_url.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
 import 'package:construtech/features/home/home_form_state.dart';
+import 'package:construtech/features/materials/materials_form_state.dart';
 import 'package:construtech/services/secure_storage.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 
 class MaterialsFormController extends ChangeNotifier {
   MaterialsFormController();
 
-  HomeFormState _state = HomeFormInitialState();
+  MaterialsFormState _state = MaterialsFormInitialState();
 
-  HomeFormState get state => _state;
+  MaterialsFormState get state => _state;
 
-  void _changeState(HomeFormState newState) {
+  void _changeState(MaterialsFormState newState) {
     _state = newState;
     notifyListeners();
   }
 
-  Future<void> InsertObra({
+  Future<void> InsertMaterias({
     required BuildContext context,
-    required String NomeCliente,
-    required String NomeObra,
-    required String Endereco,
-    required String TipoObra,
-    required String PrazoExecucao,
-    required String EstagioAtual,
-    required String? Detalhes,
+    required int Quantidade,
+    required String Nome,
+    required String NomeObra
   }) async {
-    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/InsertObra';
+    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/UpInsertPedidoMateriais';
     print('URL final da API: $url');
 
     final Map<String, dynamic> body = {
-      "NomeCliente": NomeCliente,
-      "NomeObra": NomeObra,
-      "Endereco": Endereco,
-      "Tipo": TipoObra,
-      "PrazoExecucao": PrazoExecucao,
-      "EstagioAtual": EstagioAtual,
-      "Detalhes": Detalhes,
+      "Quantidade": Quantidade,
+      "Material": {"Nome": Nome},
+      "Obra": {"NomeObra": NomeObra},
     };
     print('body: $body');
 
     try {
       await HelperAPI.postData(context, url, body);
-      _changeState(HomeFormSuccessState());
+      _changeState(MaterialsFormSuccessState());
     } catch (e) {
-      _changeState(HomeFormErrorState(e.toString()));
+      _changeState(MaterialsFormErrorState(e.toString()));
     }
   }
 }
