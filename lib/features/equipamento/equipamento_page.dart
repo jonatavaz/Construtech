@@ -4,30 +4,53 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
+import 'package:construtech/features/equipamento/equipamento_controller.dart';
+import 'package:construtech/common/models/equipamento.dart';
+import 'package:construtech/common/utils/ui_utils.dart';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EquipamentoPage extends StatefulWidget {
-  const EquipamentoPage({super.key});
+  final int codObra;
+  final String nomeObra;
+
+  const EquipamentoPage({
+    Key? key,
+    required this.codObra,
+    required this.nomeObra,
+  }) : super(key: key);
 
   @override
   State<EquipamentoPage> createState() => _EquipamentoPageState();
 }
 
 class _EquipamentoPageState extends State<EquipamentoPage> {
-  double get textScaleFactor =>
-      MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
-  double get iconSize => MediaQuery.of(context).size.width < 360 ? 16.0 : 24.0;
+  late final EquipamentoController _controller;
 
-  @override
-  void dispose() {
-    log('disposed');
-    super.dispose();
-  }
+  double get textScaleFactor => MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
+  double get iconSize => MediaQuery.of(context).size.width < 360 ? 16.0 : 24.0;
 
   @override
   void initState() {
     super.initState();
-    log('init');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller = Provider.of<EquipamentoController>(context, listen: false);
+      _controller.addListener(_onControllerStateChange);
+      _controller.fetchEquipamentos(context, widget.codObra);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onControllerStateChange);
+    super.dispose();
+  }
+
+  void _onControllerStateChange() {
+    if (!mounted) return;
+
+    final state = _controller.state;
   }
 
   @override
@@ -64,10 +87,17 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Equipamentos',
+                      'Equipamentos da Obra',
                       textScaleFactor: textScaleFactor,
                       style: AppTextStyle.mediumText20.apply(
                         color: AppColors.white,
+                      ),
+                    ),
+                    Text(
+                      widget.nomeObra,
+                      textScaleFactor: textScaleFactor,
+                      style: AppTextStyle.smallText.apply(
+                        color: AppColors.white.withOpacity(0.8),
                       ),
                     ),
                   ],
@@ -75,52 +105,121 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
               ],
             ),
           ),
+          
           Positioned(
-            top: 397.h,
+            top: 280.h,
             left: 0,
             right: 0,
-            bottom: 0,
-            child: Column(
+            bottom: 0, 
+            child: Column( 
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      final color = index % 2 == 0 ? Colors.green : Colors.red;
-                      final value = index % 2 == 0
-                          ? "Em estoque"
-                          : "Prédio LGA Sul";
-                      return ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
-                        leading: Container(
-                          decoration: const BoxDecoration(
-                            color: AppColors.whitePurple,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Listagem de Equipamentos',
+                        style: AppTextStyle.mediumText18,
+                      ),
+                    ],
+                  ),
+                ),
+                
+                Consumer<EquipamentoController>(
+                  builder: (context, controller, child) {
+                    if (controller.state is EquipamentoLoadingState) {
+                      return const Expanded(child: Center(child: CircularProgressIndicator()));
+                    } else if (controller.state is EquipamentoErrorState) {
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            'Erro ao carregar equipamentos: ${(controller.state as EquipamentoErrorState).message}',
+                            style: AppTextStyle.smallText.apply(color: Colors.red),
+                            textAlign: TextAlign.center,
                           ),
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Icon(Icons.handyman_outlined),
-                        ),
-                        title: const Text(
-                          'Bitoneira',
-                          style: AppTextStyle.smallText,
-                        ),
-                        subtitle: const Text(
-                          '21/03/2025',
-                          style: AppTextStyle.smallText13,
-                        ),
-                        trailing: Text(
-                          value,
-                          style: AppTextStyle.mediumText18.apply(color: color),
                         ),
                       );
-                    },
-                  ),
+                    } else if (controller.state is EquipamentoSuccessState && controller.equipamentos.isEmpty) {
+                      return const Expanded(
+                        child: Center(
+                          child: Text(
+                            'Nenhum equipamento nessa obra.',
+                            style: AppTextStyle.smallText,
+                          ),
+                        ),
+                      );
+                    } else if (controller.state is EquipamentoSuccessState) {
+                      return Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: controller.equipamentos.length,
+                          itemBuilder: (context, index) {
+                            final equipamento = controller.equipamentos[index];
+                            final color = equipamento.disponibilidadeObra == 'Em Estoque' ? Colors.green : Colors.red;
+                            final value = equipamento.disponibilidadeObra;
+
+                            return ListTile(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              leading: Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.whitePurple,
+                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: const Icon(Icons.handyman_outlined),
+                              ),
+                              title: Text(
+                                equipamento.nomeEquipamento,
+                                style: AppTextStyle.smallText,
+                              ),
+                              subtitle: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Obra: ${equipamento.nomeObra}',
+                                    style: AppTextStyle.smallText13,
+                                  ),
+                                  Text(
+                                    'Custo/Hora: \$${equipamento.custoHora.toStringAsFixed(2)}',
+                                    style: AppTextStyle.smallText13,
+                                  ),
+                                  if (equipamento.dataAlocacao != null && equipamento.dataAlocacao!.isNotEmpty)
+                                    Text(
+                                      'Alocado em: ${equipamento.dataAlocacao}',
+                                      style: AppTextStyle.smallText13,
+                                    ),
+                                  if (equipamento.dataRetorno != null && equipamento.dataRetorno!.isNotEmpty)
+                                    Text(
+                                      'Retorno em: ${equipamento.dataRetorno}',
+                                      style: AppTextStyle.smallText13,
+                                    ),
+                                ],
+                              ),
+                              trailing: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    value,
+                                    style: AppTextStyle.mediumText18.apply(color: color),
+                                  ),
+                                  if (equipamento.manutencao)
+                                    Text(
+                                      'Em Manutenção',
+                                      style: AppTextStyle.smallText13.apply(color: Colors.orange),
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Expanded(child: Center(child: Text('Buscando de equipamentos.')));
+                  },
                 ),
               ],
             ),

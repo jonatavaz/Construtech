@@ -8,7 +8,6 @@ import 'package:construtech/services/secure_storage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpController extends ChangeNotifier {
-  //final AuthServices _services;
   SignUpController();
 
   SignUpState _state = SignUpInitialState();

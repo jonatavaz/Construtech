@@ -1,3 +1,4 @@
+import 'package:construtech/features/equipamento/equipamento_controller.dart';
 import 'package:construtech/features/home/home_controller.dart';
 import 'package:construtech/features/home/home_form_controller.dart';
 import 'package:construtech/features/materials/materials_form_controller.dart';
@@ -19,4 +20,5 @@ void setupDependences() {
   locator.registerFactory<MaterialsFormController>(
     () => MaterialsFormController(),
   );
+  locator.registerFactory<EquipamentoController>(() => EquipamentoController());
 }

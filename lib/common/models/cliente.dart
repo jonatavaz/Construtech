@@ -1,4 +1,3 @@
-// lib/common/models/cliente.dart
 
 class Cliente {
   final int codCliente;

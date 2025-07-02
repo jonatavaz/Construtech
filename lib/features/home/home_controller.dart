@@ -36,8 +36,7 @@ class HomeController extends ChangeNotifier {
   Future<void> GetObras(BuildContext context) async {
     _changeState(HomeLoadingState());
     final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetObras';
-    log('HomeController.fetchObras: Chamando URL: $url');
-
+    
     try {
       final dynamic apiResponse = await HelperAPI.getListData(context, url);
 

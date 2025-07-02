@@ -377,13 +377,15 @@ class _HomePageState extends State<HomePage> {
                               );
                             }
                             return ListTile(
-                              // --- AQUI ESTÁ A LÓGICA DO CLIQUE ---
                               onTap: () {
-                                // Quando o usuário clicar, navegue para a EquipamentoFormPage
-                                // e passe o objeto `obra` como um argumento.
-                                Navigator.pushReplacementNamed(
+                                Navigator.push(
                                   context,
-                                  NamedRoute.equipamentoPage,
+                                  MaterialPageRoute(
+                                    builder: (context) => EquipamentoPage(
+                                      codObra: obra.codObra,
+                                      nomeObra: obra.nomeObra,
+                                    ),
+                                  ),
                                 );
                               },
                               contentPadding: const EdgeInsets.symmetric(

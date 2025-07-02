@@ -121,6 +121,7 @@ class HelperAPI {
 
         try {
           final List<dynamic> responseData = json.decode(response.body);
+          print(responseData);
           return responseData;
         } catch (e) {
           showAlerts(context, 'Erro ao processar dados recebidos');

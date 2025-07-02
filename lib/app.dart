@@ -1,4 +1,5 @@
 import 'package:construtech/common/constants/routes.dart';
+import 'package:construtech/features/equipamento/equipamento_controller.dart';
 import 'package:construtech/features/equipamento/equipamento_page.dart';
 import 'package:construtech/features/home/home_controller.dart';
 import 'package:construtech/features/home/home_form_page.dart';
@@ -23,26 +24,32 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: NamedRoute.splash,
-      routes: {
-        NamedRoute.initial: (context) => const OnboardingPage(),
-        NamedRoute.splash: (context) => const SplashPage(),
-        NamedRoute.signUp: (context) => const SignUpPage(),
-        NamedRoute.signIn: (context) => const SignInPage(),
-        NamedRoute.home: (context) => ChangeNotifierProvider<HomeController>(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<HomeController>(
           create: (_) => locator<HomeController>(),
-          child: const HomePageView(),
         ),
-        NamedRoute.payments: (context) => const PaymentsPage(),
-        NamedRoute.materials: (context) => const MaterialsPage(),
-        NamedRoute.person: (context) => const PersonPage(),
-        NamedRoute.homeFormPage: (context) => const HomeFormPage(),
-        NamedRoute.materialsFormPage: (context) => const MaterialsFormPage(),
-        NamedRoute.paymentsFormPage: (context) => const PaymentsFormPage(),
-        NamedRoute.personFormPage: (context) => const PersonFormPage(),
-        NamedRoute.equipamentoPage: (context) => const EquipamentoPage(),
-      },
+        ChangeNotifierProvider<EquipamentoController>(
+          create: (_) => locator<EquipamentoController>(),
+        ),
+      ],
+      child: MaterialApp(
+        initialRoute: NamedRoute.splash,
+        routes: {
+          NamedRoute.initial: (context) => const OnboardingPage(),
+          NamedRoute.splash: (context) => const SplashPage(),
+          NamedRoute.signUp: (context) => const SignUpPage(),
+          NamedRoute.signIn: (context) => const SignInPage(),
+          NamedRoute.home: (context) => const HomePageView(), 
+          NamedRoute.payments: (context) => const PaymentsPage(),
+          NamedRoute.materials: (context) => const MaterialsPage(),
+          NamedRoute.person: (context) => const PersonPage(),
+          NamedRoute.homeFormPage: (context) => const HomeFormPage(),
+          NamedRoute.materialsFormPage: (context) => const MaterialsFormPage(),
+          NamedRoute.paymentsFormPage: (context) => const PaymentsFormPage(),
+          NamedRoute.personFormPage: (context) => const PersonPage(), 
+         },
+      ),
     );
   }
 }
