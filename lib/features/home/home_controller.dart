@@ -53,8 +53,6 @@ class HomeController extends ChangeNotifier {
       } else {
         throw Exception('Erro no formato da $apiResponse');
       }
-    } on AppException catch (e) {
-      _changeState(HomeErrorState(e.message));
     } catch (e) {
       _changeState(HomeErrorState('Erro ao obras: ${e.toString()}'));
     }

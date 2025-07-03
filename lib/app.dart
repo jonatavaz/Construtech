@@ -5,10 +5,11 @@ import 'package:construtech/features/home/home_controller.dart';
 import 'package:construtech/features/home/home_form_page.dart';
 import 'package:construtech/features/home/home_page.dart';
 import 'package:construtech/features/home/home_page_view.dart';
+import 'package:construtech/features/materials/materials_controller.dart';
 import 'package:construtech/features/materials/materials_form_page.dart';
 import 'package:construtech/features/materials/materials_page.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
-import 'package:construtech/features/payments/payments_form_page.dart';
+import 'package:construtech/features/payments/forms/payments_form_page.dart';
 import 'package:construtech/features/payments/payments_page.dart';
 import 'package:construtech/features/person/person_form_page.dart';
 import 'package:construtech/features/person/person_page.dart';
@@ -31,6 +32,9 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider<EquipamentoController>(
           create: (_) => locator<EquipamentoController>(),
+        ),
+        ChangeNotifierProvider<MaterialsController>(
+          create: (_) => locator<MaterialsController>(),
         ),
       ],
       child: MaterialApp(

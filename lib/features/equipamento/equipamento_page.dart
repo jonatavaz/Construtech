@@ -97,7 +97,7 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                       widget.nomeObra,
                       textScaleFactor: textScaleFactor,
                       style: AppTextStyle.smallText.apply(
-                        color: AppColors.white.withOpacity(0.8),
+                        color: AppColors.purple.withOpacity(0.8),
                       ),
                     ),
                   ],
@@ -107,7 +107,7 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
           ),
           
           Positioned(
-            top: 280.h,
+            top: 300.h,
             left: 0,
             right: 0,
             bottom: 0, 

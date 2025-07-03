@@ -4,37 +4,34 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
-import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
-import 'package:construtech/features/home/home_form_controller.dart';
-import 'package:construtech/features/home/home_form_state.dart';
-import 'package:construtech/features/materials/materials_form_controller.dart';
 import 'package:construtech/features/materials/materials_form_state.dart';
-import 'package:construtech/features/onboarding/onboarding_page.dart';
+import 'package:construtech/features/payments/forms/payments_form_controller.dart';
+import 'package:construtech/features/payments/forms/payments_form_state.dart';
 import 'package:construtech/locator.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 
-class MaterialsFormPage extends StatefulWidget {
-  const MaterialsFormPage({super.key});
+class PaymentsFormPage extends StatefulWidget {
+  const PaymentsFormPage({super.key});
 
   @override
-  State<MaterialsFormPage> createState() => _MaterialsFormPageState();
+  State<PaymentsFormPage> createState() => _PaymentsFormPageState();
 }
 
-class _MaterialsFormPageState extends State<MaterialsFormPage> {
+class _PaymentsFormPageState extends State<PaymentsFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final _quantidadeController = TextEditingController();
+  final _valorPagoController = TextEditingController();
   final _nomeController = TextEditingController();
   final _nomeObraController = TextEditingController();
 
-  final _controller = locator.get<MaterialsFormController>();
+  final _controller = locator.get<PaymentsFormController>();
 
   @override
   void initState() {
     super.initState();
     _controller.addListener(() {
-      if (_controller.state is MaterialsFormLoadingState) {
+      if (_controller.state is PaymentsFormLoadingState) {
         showDialog(
           context: context,
           builder: (context) => const Center(
@@ -42,11 +39,11 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
           ),
         );
       }
-      if (_controller.state is MaterialsFormSuccessState) {
-        Navigator.pushReplacementNamed(context, NamedRoute.materials);
+      if (_controller.state is PaymentsFormSuccessState) {
+        Navigator.pushReplacementNamed(context, NamedRoute.payments);
       }
-      if (_controller.state is MaterialsFormErrorState) {
-        final error = (_controller.state as MaterialsFormErrorState).message;
+      if (_controller.state is PaymentsFormErrorState) {
+        final error = (_controller.state as PaymentsFormErrorState).message;
         Navigator.pop(context);
       }
     });
@@ -54,7 +51,7 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
 
   @override
   void dispose() {
-    _quantidadeController.dispose();
+    _valorPagoController.dispose();
     _nomeController.dispose();
     _nomeObraController.dispose();
     _controller.dispose();
@@ -69,7 +66,7 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 25.0),
             child: Text(
-              'Cadastro de Materiais',
+              'Pagamentos',
               textAlign: TextAlign.center,
               style: AppTextStyle.mediumText.copyWith(
                 color: AppColors.purpleOne,
@@ -81,17 +78,18 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
             child: Column(
               children: [
                 CustomTextFormField(
-                  controller: _quantidadeController,
-                  labelText: "Quantidade",
+                  controller: _valorPagoController,
+                  labelText: "Valor",
+                  hintText: "00,00",
                 ),
                 CustomTextFormField(
                   controller: _nomeController,
-                  labelText: "Nome Material",
+                  labelText: "Nome Forma Pagamento",
                   hintText: "Nome",
                 ),
                 CustomTextFormField(
                   controller: _nomeObraController,
-                  labelText: "Nome da Obra",
+                  labelText: "Nome Obra",
                   hintText: "Nome",
                 ),
               ],
@@ -111,9 +109,9 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
                     _formKey.currentState != null &&
                     _formKey.currentState!.validate();
                 if (valid) {
-                  _controller.InsertMaterias(
+                  _controller.InsertPagamento(
                     context: context,
-                    Quantidade: int.parse(_quantidadeController.text),
+                    ValorPago: Decimal.parse(_valorPagoController.text),
                     Nome: _nomeController.text,
                     NomeObra: _nomeObraController.text,
                   );

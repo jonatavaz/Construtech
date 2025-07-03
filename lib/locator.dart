@@ -1,7 +1,9 @@
 import 'package:construtech/features/equipamento/equipamento_controller.dart';
 import 'package:construtech/features/home/home_controller.dart';
 import 'package:construtech/features/home/home_form_controller.dart';
+import 'package:construtech/features/materials/materials_controller.dart';
 import 'package:construtech/features/materials/materials_form_controller.dart';
+import 'package:construtech/features/payments/forms/payments_form_controller.dart';
 import 'package:construtech/features/sign_in/sign_in_controller.dart';
 import 'package:construtech/features/sign_up/sign_up_controller.dart';
 import 'package:construtech/services/auth_services.dart';
@@ -21,4 +23,6 @@ void setupDependences() {
     () => MaterialsFormController(),
   );
   locator.registerFactory<EquipamentoController>(() => EquipamentoController());
+  locator.registerFactory<MaterialsController>(() => MaterialsController());
+  locator.registerFactory<PaymentsFormController>(() => PaymentsFormController());
 }
