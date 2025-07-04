@@ -4,7 +4,13 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
+import 'package:construtech/features/payments/payments_controller.dart';
+import 'package:construtech/common/models/pagamento.dart';
+import 'package:construtech/common/utils/ui_utils.dart';
+import 'package:construtech/locator.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 class PaymentsPage extends StatefulWidget {
   const PaymentsPage({super.key});
@@ -14,21 +20,24 @@ class PaymentsPage extends StatefulWidget {
 }
 
 class _PaymentsPageState extends State<PaymentsPage> {
+  final _controller = locator.get<PaymentsController>();
+
   double get textScaleFactor =>
       MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
   double get iconSize => MediaQuery.of(context).size.width < 360 ? 16.0 : 24.0;
 
   @override
-  void dispose() {
-    log('disposed');
-    super.dispose();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.fetchPagamentos(context); 
+    });
   }
 
   @override
-  void initState() {
-    super.initState();
-    log('init');
-    //timer;
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -73,23 +82,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     ),
                   ],
                 ),
-                // Container(
-                //   padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                //   decoration: BoxDecoration(
-                //     borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                //     color: AppColors.white.withOpacity(0.06),
-                //   ),
-                //   child: Stack(
-                //     alignment: const AlignmentDirectional(0.5, -0.5),
-                //     children: [
-                //       const Icon(
-                //         Icons.person_outline_outlined,
-                //         color: AppColors.white,
-                //       ),
-                //       // Container(width: 8.w, height: 8.w,decoration: BoxDecoration(color: AppC),,)],
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -132,20 +124,16 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   ),
                   const SizedBox(height: 24.0),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            print('Botão Depósitos clicado!');
-                          },
+                          onPressed: () { print('Botão Depósitos clicado!'); },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.purple.withOpacity(0.06),
                             foregroundColor: AppColors.purple,
                             padding: const EdgeInsets.all(10.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                             elevation: 0,
                           ),
                           child: Column(
@@ -153,42 +141,28 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.arrow_downward,
-                                    color: AppColors.purple,
-                                    size: iconSize,
-                                  ),
+                                  Icon(Icons.arrow_downward, color: AppColors.purple, size: iconSize),
                                   const SizedBox(width: 10.0),
-                                  Text(
-                                    'Depósitos',
-                                    textScaleFactor: textScaleFactor,
-                                    style: AppTextStyle.smallText.apply(
-                                      color: AppColors.purple,
-                                    ),
-                                  ),
+                                  Text('Depósitos', textScaleFactor: textScaleFactor, style: AppTextStyle.smallText.apply(color: AppColors.purple)),
                                 ],
                               ),
-
                               const SizedBox(height: 4.0),
                             ],
                           ),
                         ),
                       ),
                       const SizedBox(width: 16.0),
-
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            print('Botão Início obra clicado!');
-                          },
+                          onPressed: () { print('Botão Transação clicado!'); },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.purple.withOpacity(0.06),
                             foregroundColor: AppColors.white,
                             padding: const EdgeInsets.all(12.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                             elevation: 0,
                           ),
                           child: Column(
@@ -196,20 +170,12 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.arrow_upward,
-                                    color: AppColors.purple,
-                                    size: iconSize,
-                                  ),
+                                  Icon(Icons.arrow_upward, color: AppColors.purple, size: iconSize),
                                   const SizedBox(width: 10.0),
-                                  Text(
-                                    'Transação',
-                                    textScaleFactor: textScaleFactor,
-                                    style: AppTextStyle.smallText.apply(
-                                      color: AppColors.purple,
-                                    ),
-                                  ),
+                                  Text('Transação', textScaleFactor: textScaleFactor, style: AppTextStyle.smallText.apply(color: AppColors.purple)),
                                 ],
                               ),
                             ],
@@ -222,52 +188,93 @@ class _PaymentsPageState extends State<PaymentsPage> {
               ),
             ),
           ),
+          
           Positioned(
-            top: 397.h,
+            top: 450.h,
             left: 0,
             right: 0,
             bottom: 0,
             child: Column(
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      final color = index % 2 == 0 ? Colors.green : Colors.red;
-                      final value = index % 2 == 0
-                          ? "\$ 5.000,00"
-                          : "\$ 300,00";
-                      return ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
-                        leading: Container(
-                          decoration: const BoxDecoration(
-                            color: AppColors.whitePurple,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Histórico de Pagamentos',
+                        style: AppTextStyle.mediumText18,
+                      ),
+                    ],
+                  ),
+                ),
+                Consumer<PaymentsController>(
+                  builder: (context, controller, child) {
+                    print('Consumer: Reconstruindo com estado: ${controller.state.runtimeType}');
+                            print('Consumer: Quantidade de pagamentos: ${controller.pagamentos.length}');
+                    if (controller.state is PaymentsLoadingState) {
+                      return const Expanded(child: Center(child: CircularProgressIndicator()));
+                    } else if (controller.state is PaymentsErrorState) {
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            'Erro ao carregar pagamentos: ${(controller.state as PaymentsErrorState).message}',
+                            style: AppTextStyle.smallText.apply(color: Colors.red),
+                            textAlign: TextAlign.center,
                           ),
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Icon(Icons.attach_money_outlined),
-                        ),
-                        title: const Text(
-                          'Jonata Vaz',
-                          style: AppTextStyle.smallText,
-                        ),
-                        subtitle: const Text(
-                          '20/06/2025',
-                          style: AppTextStyle.smallText13,
-                        ),
-                        trailing: Text(
-                          value,
-                          style: AppTextStyle.mediumText18.apply(color: color),
                         ),
                       );
-                    },
-                  ),
+                    } else if (controller.state is PaymentsSuccessState && controller.pagamentos.isEmpty) {
+                      return const Expanded(
+                        child: Center(
+                          child: Text(
+                            'Nenhum pagamento registrado ainda.',
+                            style: AppTextStyle.smallText,
+                          ),
+                        ),
+                      );
+                      
+                    } else if (controller.state is PaymentsSuccessState) {
+                      return Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: controller.pagamentos.length,
+                          itemBuilder: (context, index) {
+                            final pagamento = controller.pagamentos[index];
+                            final color = pagamento.valorPago > 0 ? Colors.green : Colors.red;
+                            //final value = '\$ ${pagamento.valorPago.toStringAsFixed(2)}';
+                            
+                            
+                            return ListTile(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              leading: Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.whitePurple,
+                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: const Icon(Icons.attach_money_outlined),
+                              ),
+                              title: Text(
+                                pagamento.nomeObra,
+                                style: AppTextStyle.smallText,
+                              ),
+                              subtitle: Text(
+                                pagamento.dataHoraPagamento,
+                                style: AppTextStyle.smallText13,
+                              ),
+                              trailing: Text(
+                                pagamento.valorPago.toStringAsFixed(2),
+                                style: AppTextStyle.mediumText18.apply(color: color),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Expanded(child: Center(child: Text('Iniciando busca de pagamentos...')));
+                  },
                 ),
               ],
             ),

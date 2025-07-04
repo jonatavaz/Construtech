@@ -10,6 +10,7 @@ import 'package:construtech/features/materials/materials_form_page.dart';
 import 'package:construtech/features/materials/materials_page.dart';
 import 'package:construtech/features/onboarding/onboarding_page.dart';
 import 'package:construtech/features/payments/forms/payments_form_page.dart';
+import 'package:construtech/features/payments/payments_controller.dart';
 import 'package:construtech/features/payments/payments_page.dart';
 import 'package:construtech/features/person/person_form_page.dart';
 import 'package:construtech/features/person/person_page.dart';
@@ -36,6 +37,9 @@ class App extends StatelessWidget {
         ChangeNotifierProvider<MaterialsController>(
           create: (_) => locator<MaterialsController>(),
         ),
+        ChangeNotifierProvider<PaymentsController>(
+          create: (_) => locator<PaymentsController>(),
+        ),
       ],
       child: MaterialApp(
         initialRoute: NamedRoute.splash,
@@ -45,7 +49,7 @@ class App extends StatelessWidget {
           NamedRoute.signUp: (context) => const SignUpPage(),
           NamedRoute.signIn: (context) => const SignInPage(),
           NamedRoute.home: (context) => const HomePageView(), 
-          NamedRoute.payments: (context) => const PaymentsPage(),
+          //NamedRoute.payments: (context) => const PaymentsPage(),
           NamedRoute.materials: (context) => const MaterialsPage(),
           NamedRoute.person: (context) => const PersonPage(),
           NamedRoute.homeFormPage: (context) => const HomeFormPage(),
