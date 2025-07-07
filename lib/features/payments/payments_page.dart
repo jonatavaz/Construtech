@@ -7,9 +7,7 @@ import 'package:construtech/common/exceptions/sizes.dart';
 import 'package:construtech/features/payments/payments_controller.dart';
 import 'package:construtech/common/models/pagamento.dart';
 import 'package:construtech/common/utils/ui_utils.dart';
-import 'package:construtech/locator.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class PaymentsPage extends StatefulWidget {
@@ -20,7 +18,7 @@ class PaymentsPage extends StatefulWidget {
 }
 
 class _PaymentsPageState extends State<PaymentsPage> {
-  final _controller = locator.get<PaymentsController>();
+  late final PaymentsController _controller;
 
   double get textScaleFactor =>
       MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
@@ -30,15 +28,42 @@ class _PaymentsPageState extends State<PaymentsPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.fetchPagamentos(context); 
+      _controller = Provider.of<PaymentsController>(context, listen: false);
+      _controller.addListener(_onControllerStateChange);
+      _controller.fetchPagamentos(context);
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.removeListener(_onControllerStateChange);
     super.dispose();
   }
+
+  void _onControllerStateChange() {
+    if (!mounted) return;
+
+    final state = _controller.state;
+    if (state is! PaymentsLoadingState) {
+      if (Navigator.of(context, ).canPop()) {
+        Navigator.of(context, ).pop();
+      }
+    }
+
+    if (state is PaymentsLoadingState) {
+      if (ModalRoute.of(context)?.isCurrent != true) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (ctx) => const Center(child: CircularProgressIndicator(color: AppColors.purpleOne)),
+        );
+      }
+    } else if (state is PaymentsErrorState) {
+      showAlerts(context, (state as PaymentsErrorState).message);
+    } else if (state is PaymentsSuccessState) {
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +213,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
               ),
             ),
           ),
-          
           Positioned(
             top: 450.h,
             left: 0,
@@ -211,7 +235,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 Consumer<PaymentsController>(
                   builder: (context, controller, child) {
                     print('Consumer: Reconstruindo com estado: ${controller.state.runtimeType}');
-                            print('Consumer: Quantidade de pagamentos: ${controller.pagamentos.length}');
+                    print('Consumer: Quantidade de pagamentos: ${controller.pagamentos.length}');
                     if (controller.state is PaymentsLoadingState) {
                       return const Expanded(child: Center(child: CircularProgressIndicator()));
                     } else if (controller.state is PaymentsErrorState) {
@@ -233,7 +257,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           ),
                         ),
                       );
-                      
                     } else if (controller.state is PaymentsSuccessState) {
                       return Expanded(
                         child: ListView.builder(
@@ -242,8 +265,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           itemCount: controller.pagamentos.length,
                           itemBuilder: (context, index) {
                             final pagamento = controller.pagamentos[index];
-                            final color = pagamento.valorPago > 0 ? Colors.green : Colors.red;
-                            //final value = '\$ ${pagamento.valorPago.toStringAsFixed(2)}';
+                            
+                            final bool isPositive = (pagamento.valorPago ?? 0) > 0; 
+                            final color = isPositive ? Colors.green : Colors.red;
+                            final value = '\$ ${pagamento.valorPago?.toStringAsFixed(2) ?? '0.00'}';
                             
                             
                             return ListTile(
@@ -257,15 +282,15 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                 child: const Icon(Icons.attach_money_outlined),
                               ),
                               title: Text(
-                                pagamento.nomeObra,
+                                pagamento.nomeObra ?? 'Obra Desconhecida',
                                 style: AppTextStyle.smallText,
                               ),
                               subtitle: Text(
-                                pagamento.dataHoraPagamento,
+                                pagamento.dataHoraPagamento ?? 'Data Desconhecida',
                                 style: AppTextStyle.smallText13,
                               ),
                               trailing: Text(
-                                pagamento.valorPago.toStringAsFixed(2),
+                                value,
                                 style: AppTextStyle.mediumText18.apply(color: color),
                               ),
                             );

@@ -134,7 +134,6 @@ class _HomePageState extends State<HomePage> {
                               color: AppColors.white,
                             ),
                           ),
-                          // Use o Consumer para exibir o total de obras
                           Consumer<HomeController>(
                             builder: (context, controller, child) {
                               return Text(
