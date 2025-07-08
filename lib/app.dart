@@ -12,7 +12,8 @@ import 'package:construtech/features/onboarding/onboarding_page.dart';
 import 'package:construtech/features/payments/forms/payments_form_page.dart';
 import 'package:construtech/features/payments/payments_controller.dart';
 import 'package:construtech/features/payments/payments_page.dart';
-import 'package:construtech/features/person/person_form_page.dart';
+import 'package:construtech/features/person/forms/person_form_page.dart';
+import 'package:construtech/features/person/person_controller.dart';
 import 'package:construtech/features/person/person_page.dart';
 import 'package:construtech/features/sign_in/sign_in_page.dart';
 import 'package:construtech/features/sign_up/sign_up_page.dart';
@@ -39,6 +40,9 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider<PaymentsController>(
           create: (_) => locator<PaymentsController>(),
+        ),
+        ChangeNotifierProvider<PersonController>(
+          create: (_) => locator<PersonController>(),
         ),
       ],
       child: MaterialApp(

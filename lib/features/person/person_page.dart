@@ -4,7 +4,13 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
+import 'package:construtech/features/person/person_controller.dart'; // Importe o controller
+import 'package:construtech/common/models/fornecedor.dart'; // Importe o modelo Fornecedor
+import 'package:construtech/common/utils/ui_utils.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart'; // Para Consumer
 
 class PersonPage extends StatefulWidget {
   const PersonPage({super.key});
@@ -14,20 +20,52 @@ class PersonPage extends StatefulWidget {
 }
 
 class _PersonPageState extends State<PersonPage> {
-  get textScaleFactor => null;
+  late final PersonController _controller; // Declare como late final
 
-  
-  @override
-  void dispose() {
-    log('disposed');
-    super.dispose();
-  }
+  double get textScaleFactor =>
+      MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
+  double get iconSize => MediaQuery.of(context).size.width < 360 ? 16.0 : 24.0;
 
   @override
   void initState() {
-    
     super.initState();
-    log('init');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller = Provider.of<PersonController>(context, listen: false); // Obtém via Provider
+      _controller.addListener(_onControllerStateChange);
+      _controller.fetchFornecedores(context); // Chama para buscar os fornecedores
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onControllerStateChange);
+    _controller.dispose(); // O Provider cuida do dispose se for registerFactory
+    super.dispose();
+  }
+
+  void _onControllerStateChange() {
+    if (!mounted) return;
+
+    final state = _controller.state;
+
+    if (state is! PersonLoadingState) {
+      if (Navigator.of(context, ).canPop()) {
+        Navigator.of(context, ).pop();
+      }
+    }
+
+    if (state is PersonLoadingState) {
+      if (ModalRoute.of(context)?.isCurrent != true) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (ctx) => const Center(child: CircularProgressIndicator(color: AppColors.purpleOne)),
+        );
+      }
+    } else if (state is PersonErrorState) {
+      showAlerts(context, (state as PersonErrorState).message);
+    } else if (state is PersonSuccessState) {
+    }
   }
 
   @override
@@ -64,7 +102,7 @@ class _PersonPageState extends State<PersonPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Fornecedores',
+                      'Fornecedores', 
                       textScaleFactor: textScaleFactor,
                       style: AppTextStyle.mediumText20.apply(
                         color: AppColors.white,
@@ -75,53 +113,93 @@ class _PersonPageState extends State<PersonPage> {
               ],
             ),
           ),
-          
           Positioned(
-            top: 397.h,
+            top: 397.h, 
             left: 0,
             right: 0,
             bottom: 0,
             child: Column(
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      final color = index % 2 == 0 ? Colors.green : Colors.red;
-                      final value = index % 2 == 0
-                          ? "Pedido entregue"
-                          : "Em atraso";
-                      return ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
-                        leading: Container(
-                          decoration: const BoxDecoration(
-                            color: AppColors.whitePurple,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Listagem de Fornecedores',
+                        style: AppTextStyle.mediumText18,
+                      ),
+                    ],
+                  ),
+                ),
+                Consumer<PersonController>(
+                  builder: (context, controller, child) {
+                    if (controller.state is PersonLoadingState) {
+                      return const Expanded(child: Center(child: CircularProgressIndicator()));
+                    } else if (controller.state is PersonErrorState) {
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            'Erro ao carregar fornecedores: ${(controller.state as PersonErrorState).message}',
+                            style: AppTextStyle.smallText.apply(color: Colors.red),
+                            textAlign: TextAlign.center,
                           ),
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Icon(Icons.handyman_outlined),
-                        ),
-                        title: const Text(
-                          'ABC da Construção',
-                          style: AppTextStyle.smallText,
-                        ),
-                        subtitle: const Text(
-                          '17/03/2025',
-                          style: AppTextStyle.smallText13,
-                        ),
-                        trailing: Text(
-                          value,
-                          style: AppTextStyle.mediumText18.apply(color: color),
                         ),
                       );
-                    },
-                  ),
+                    } else if (controller.state is PersonSuccessState && controller.fornecedores.isEmpty) {
+                      return const Expanded(
+                        child: Center(
+                          child: Text(
+                            'Nenhum fornecedor cadastrado ainda.',
+                            style: AppTextStyle.smallText,
+                          ),
+                        ),
+                      );
+                    } else if (controller.state is PersonSuccessState) {
+                      return Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: controller.fornecedores.length,
+                          itemBuilder: (context, index) {
+                            final fornecedor = controller.fornecedores[index];
+                             final color = (fornecedor.avaliacao == 'Excelente' || fornecedor.avaliacao == 'Bom') ? Colors.green : Colors.red;
+                            return ListTile(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              leading: Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.whitePurple,
+                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: const Icon(Icons.person_outline_outlined),
+                              ),
+                              title: Text(
+                                fornecedor.nome,
+                                style: AppTextStyle.smallText,
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Avaliação: ${fornecedor.avaliacao}',
+                                    style: AppTextStyle.smallText13.apply(color: color),
+                                  ),
+                                  
+                                ],
+                              ),
+                              trailing: Text(
+                                'Cód: ${fornecedor.codFornecedor}',
+                                style: AppTextStyle.mediumText18.apply(color: AppColors.purple),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Expanded(child: Center(child: Text('Iniciando busca de fornecedores...')));
+                  },
                 ),
               ],
             ),
