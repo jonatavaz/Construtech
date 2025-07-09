@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 class CustomBottomAppBar extends StatefulWidget {
   final Color? selectedItemColor;
   final List<CustomBottomAppBarItem> children;
-   final int currentIndex; // NOVO: Índice atual selecionado
+   final int currentIndex;
   final ValueChanged<int> onItemSelected;
 
   const CustomBottomAppBar({
     Key? key,
     this.selectedItemColor,
     required this.children,
-    required this.currentIndex, // Requer o índice atual
+    required this.currentIndex,
     required this.onItemSelected,
   }) : assert(children.length == 5, 'children.length must be 5'),
        super(key: key);
@@ -37,9 +37,7 @@ class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
           return Expanded(
             child: InkWell(
               onTap: item.onPressed == null ? null : () {
-                // Notifica o widget pai sobre o item selecionado
                 widget.onItemSelected(itemIndex); 
-                // E executa a ação original do item (navegação de página)
                 item.onPressed?.call();
               },
               child: Padding(
