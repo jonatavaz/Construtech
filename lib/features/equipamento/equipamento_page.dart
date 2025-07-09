@@ -28,7 +28,8 @@ class EquipamentoPage extends StatefulWidget {
 class _EquipamentoPageState extends State<EquipamentoPage> {
   late final EquipamentoController _controller;
 
-  double get textScaleFactor => MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
+  double get textScaleFactor =>
+      MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
   double get iconSize => MediaQuery.of(context).size.width < 360 ? 16.0 : 24.0;
 
   @override
@@ -37,7 +38,7 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller = Provider.of<EquipamentoController>(context, listen: false);
       _controller.addListener(_onControllerStateChange);
-      _controller.fetchEquipamentos(context, widget.codObra);
+      _controller.GetListEquipamentos(context, widget.codObra);
     });
   }
 
@@ -105,13 +106,13 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
               ],
             ),
           ),
-          
+
           Positioned(
             top: 300.h,
             left: 0,
             right: 0,
-            bottom: 0, 
-            child: Column( 
+            bottom: 0,
+            child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -125,22 +126,27 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                     ],
                   ),
                 ),
-                
+
                 Consumer<EquipamentoController>(
                   builder: (context, controller, child) {
                     if (controller.state is EquipamentoLoadingState) {
-                      return const Expanded(child: Center(child: CircularProgressIndicator()));
+                      return const Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
                     } else if (controller.state is EquipamentoErrorState) {
                       return Expanded(
                         child: Center(
                           child: Text(
                             'Erro ao carregar equipamentos: ${(controller.state as EquipamentoErrorState).message}',
-                            style: AppTextStyle.smallText.apply(color: Colors.red),
+                            style: AppTextStyle.smallText.apply(
+                              color: Colors.red,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
                       );
-                    } else if (controller.state is EquipamentoSuccessState && controller.equipamentos.isEmpty) {
+                    } else if (controller.state is EquipamentoSuccessState &&
+                        controller.equipamentos.isEmpty) {
                       return const Expanded(
                         child: Center(
                           child: Text(
@@ -157,15 +163,22 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                           itemCount: controller.equipamentos.length,
                           itemBuilder: (context, index) {
                             final equipamento = controller.equipamentos[index];
-                            final color = equipamento.disponibilidadeObra == 'Em Estoque' ? Colors.green : Colors.red;
+                            final color =
+                                equipamento.disponibilidadeObra == 'Em Estoque'
+                                ? Colors.green
+                                : Colors.red;
                             final value = equipamento.disponibilidadeObra;
 
                             return ListTile(
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
                               leading: Container(
                                 decoration: const BoxDecoration(
                                   color: AppColors.whitePurple,
-                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
                                 ),
                                 padding: const EdgeInsets.all(8.0),
                                 child: const Icon(Icons.handyman_outlined),
@@ -186,12 +199,14 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                                     'Custo/Hora: \$${equipamento.custoHora.toStringAsFixed(2)}',
                                     style: AppTextStyle.smallText13,
                                   ),
-                                  if (equipamento.dataAlocacao != null && equipamento.dataAlocacao!.isNotEmpty)
+                                  if (equipamento.dataAlocacao != null &&
+                                      equipamento.dataAlocacao!.isNotEmpty)
                                     Text(
                                       'Alocado em: ${equipamento.dataAlocacao}',
                                       style: AppTextStyle.smallText13,
                                     ),
-                                  if (equipamento.dataRetorno != null && equipamento.dataRetorno!.isNotEmpty)
+                                  if (equipamento.dataRetorno != null &&
+                                      equipamento.dataRetorno!.isNotEmpty)
                                     Text(
                                       'Retorno em: ${equipamento.dataRetorno}',
                                       style: AppTextStyle.smallText13,
@@ -204,12 +219,16 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                                 children: [
                                   Text(
                                     value,
-                                    style: AppTextStyle.mediumText18.apply(color: color),
+                                    style: AppTextStyle.mediumText18.apply(
+                                      color: color,
+                                    ),
                                   ),
                                   if (equipamento.manutencao)
                                     Text(
                                       'Em Manutenção',
-                                      style: AppTextStyle.smallText13.apply(color: Colors.orange),
+                                      style: AppTextStyle.smallText13.apply(
+                                        color: Colors.orange,
+                                      ),
                                     ),
                                 ],
                               ),
@@ -218,7 +237,9 @@ class _EquipamentoPageState extends State<EquipamentoPage> {
                         ),
                       );
                     }
-                    return const Expanded(child: Center(child: Text('Buscando de equipamentos.')));
+                    return const Expanded(
+                      child: Center(child: Text('Buscando de equipamentos.')),
+                    );
                   },
                 ),
               ],

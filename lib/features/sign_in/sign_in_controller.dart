@@ -26,12 +26,9 @@ class SignInController extends ChangeNotifier {
     required String CPF,
     required String Senha,
   }) async {
-    
-
     final url =
         '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetPessoa/{CPF, Senha}?CPF=$CPF&Senha=$Senha';
 
-    
     try {
       await HelperAPI.getData(context, url);
 

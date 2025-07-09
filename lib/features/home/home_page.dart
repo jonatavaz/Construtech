@@ -74,19 +74,19 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Boa tarde',
+                      'Boa noite',
                       textScaleFactor: textScaleFactor,
                       style: AppTextStyle.smallText.apply(
                         color: AppColors.white,
                       ),
                     ),
-                    Text(
-                      'Jonata Vaz',
-                      textScaleFactor: textScaleFactor,
-                      style: AppTextStyle.mediumText20.apply(
-                        color: AppColors.white,
-                      ),
-                    ),
+                    // Text(
+                    //   'Jonata Vaz',
+                    //   textScaleFactor: textScaleFactor,
+                    //   style: AppTextStyle.mediumText20.apply(
+                    //     color: AppColors.white,
+                    //   ),
+                    // ),
                   ],
                 ),
                 Container(
@@ -273,16 +273,12 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               const SizedBox(height: 4.0),
-                              Consumer<HomeController>(
-                                builder: (context, controller, child) {
-                                  return Text(
-                                    controller.obras.length.toString(),
-                                    textScaleFactor: textScaleFactor,
-                                    style: AppTextStyle.mediumText18.apply(
-                                      color: AppColors.purple,
-                                    ),
-                                  );
-                                },
+                              Text(
+                                '1',
+                                textScaleFactor: textScaleFactor,
+                                style: AppTextStyle.smallText.apply(
+                                  color: AppColors.purple,
+                                ),
                               ),
                             ],
                           ),

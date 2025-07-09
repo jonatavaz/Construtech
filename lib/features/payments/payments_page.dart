@@ -161,7 +161,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            print('Clicado!');
+                            print('Deposito Clicado!');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.purple.withOpacity(0.06),
@@ -204,7 +204,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            print('Botão Transação clicado!');
+                            print('Transação Clicado!');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.purple.withOpacity(0.06),
@@ -261,7 +261,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
-                        'Histórico de Pagamentos',
+                        'Listagem de Pagamentos',
                         style: AppTextStyle.mediumText18,
                       ),
                     ],
