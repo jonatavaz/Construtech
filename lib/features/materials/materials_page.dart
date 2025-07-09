@@ -1,16 +1,14 @@
-// lib/features/materials/materials_page.dart
-
 import 'dart:developer';
 
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
-import 'package:construtech/common/exceptions/sizes.dart'; // Para .h e .w
-import 'package:construtech/features/materials/materials_controller.dart'; // Importe o controller
-import 'package:construtech/common/models/material.dart'; // Importe o modelo MaterialModel
-import 'package:construtech/common/utils/ui_utils.dart'; // Para showAlerts
+import 'package:construtech/common/exceptions/sizes.dart'; 
+import 'package:construtech/features/materials/materials_controller.dart'; 
+import 'package:construtech/common/models/material.dart'; 
+import 'package:construtech/common/utils/ui_utils.dart';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // Para Consumer e Provider.of
+import 'package:provider/provider.dart';
 
 class MaterialsPage extends StatefulWidget {
   const MaterialsPage({super.key});
@@ -20,7 +18,6 @@ class MaterialsPage extends StatefulWidget {
 }
 
 class _MaterialsPageState extends State<MaterialsPage> {
-  // Obtenha a instância do MaterialsController
 
   double get textScaleFactor =>
       MediaQuery.of(context).size.width < 360 ? 0.7 : 1.0;
@@ -29,7 +26,6 @@ class _MaterialsPageState extends State<MaterialsPage> {
   @override
   void initState() {
     super.initState();
-    // Use WidgetsBinding.instance.addPostFrameCallback para garantir que o context está disponível
     WidgetsBinding.instance.addPostFrameCallback((_) {
         Provider.of<MaterialsController>(context, listen: false).GetMateriais(context);
     });
@@ -37,45 +33,14 @@ class _MaterialsPageState extends State<MaterialsPage> {
 
   @override
   void dispose() {
-    //_controller.removeListener(_onControllerStateChange); // Remova o listener
-    // O Provider cuida do dispose se o controller for registerFactory
-    // _controller.dispose();
     super.dispose();
   }
-
-  // void _onControllerStateChange() {
-  //   if (!mounted) return; // Evita setState em widget não montado
-
-
-  //   // Lógica para mostrar/esconder indicadores de carregamento
-  //   // if (state is! MaterialsLoadingState) {
-  //   //   if (Navigator.of(context, rootNonEphemeral: true).canPop()) {
-  //   //     Navigator.of(context, rootNonEphemeral: true).pop();
-  //   //   }
-  //   // }
-
-  //   if (state is MaterialsLoadingState) {
-  //     // Apenas mostra o diálogo se ele ainda não estiver visível
-  //     if (ModalRoute.of(context)?.isCurrent != true) {
-  //       showDialog(
-  //         context: context,
-  //         barrierDismissible: false,
-  //         builder: (ctx) => const Center(child: CircularProgressIndicator(color: AppColors.purpleOne)),
-  //       );
-  //     }
-  //   } else if (state is MaterialsErrorState) {
-  //     showAlerts(context, (state as MaterialsErrorState).message);
-  //   } else if (state is MaterialsSuccessState) {
-  //     // Opcional: showAlerts(context, 'Materiais carregados com sucesso!');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Cabeçalho com Degradê
           Positioned(
             left: 0,
             right: 0,
@@ -201,7 +166,7 @@ class _MaterialsPageState extends State<MaterialsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    '${value} Un.', // Quantidade
+                                    '${value} Un.', 
                                     style: AppTextStyle.mediumText18.apply(color: color),
                                   ),
                                 ],
@@ -211,7 +176,6 @@ class _MaterialsPageState extends State<MaterialsPage> {
                         ),
                       );
                     }
-                    // Retorno padrão para outros estados (ex: MaterialsInitialState antes do fetch)
                     return const Expanded(child: Center(child: Text('Iniciando busca de materiais...')));
                   },
                 ),
