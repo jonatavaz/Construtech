@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Função para exibir alertas (SnackBar)
 void showAlerts(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
