@@ -1,4 +1,3 @@
-
 class Pagamento {
   final int? codPagamento;
   final int? codFormaPagamento;
@@ -25,11 +24,11 @@ class Pagamento {
       codPagamento: json['codPagamento'] as int?,
       codFormaPagamento: json['codFormaPagamento'] as int?,
       codObra: json['codObra'] as int?,
-      valorPago: (json['ValorPago'] is num)
-          ? (json['ValorPago'] as num).toDouble()
+      valorPago: (json['valorPago'] is num)
+          ? (json['valorPago'] as num).toDouble()
           : null,
-      dataHoraPagamento: json['DataHoraPagamento'] as String?,
-      nomeObra: json['Nome'] as String?,
+      dataHoraPagamento: json['dataHoraPagamento'] as String?,
+      nomeObra: json['nome'] as String?,
       formaPagamento: json['formaPagamento'] as String?,
       obra: json['obra'],
     );
@@ -42,7 +41,7 @@ class Pagamento {
       'codObra': codObra,
       'valorPago': valorPago,
       'dataHoraPagamento': dataHoraPagamento,
-      'Nome': nomeObra,
+      'nome': nomeObra,
       'formaPagamento': formaPagamento,
       'obra': obra,
     };

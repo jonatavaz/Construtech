@@ -30,7 +30,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller = Provider.of<PaymentsController>(context, listen: false);
       _controller.addListener(_onControllerStateChange);
-      _controller.fetchPagamentos(context);
+      _controller.GetListPagamentos(context);
     });
   }
 
@@ -45,8 +45,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
     final state = _controller.state;
     if (state is! PaymentsLoadingState) {
-      if (Navigator.of(context, ).canPop()) {
-        Navigator.of(context, ).pop();
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
       }
     }
 
@@ -55,15 +55,15 @@ class _PaymentsPageState extends State<PaymentsPage> {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (ctx) => const Center(child: CircularProgressIndicator(color: AppColors.purpleOne)),
+          builder: (ctx) => const Center(
+            child: CircularProgressIndicator(color: AppColors.purpleOne),
+          ),
         );
       }
     } else if (state is PaymentsErrorState) {
       showAlerts(context, (state as PaymentsErrorState).message);
-    } else if (state is PaymentsSuccessState) {
-    }
+    } else if (state is PaymentsSuccessState) {}
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -130,18 +130,25 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Total a Pagar',
+                            'Total',
                             textScaleFactor: textScaleFactor,
                             style: AppTextStyle.smallText.apply(
                               color: AppColors.purple,
                             ),
                           ),
-                          Text(
-                            '\$ 500,90',
-                            textScaleFactor: textScaleFactor,
-                            style: AppTextStyle.mediumText20.apply(
-                              color: AppColors.purple,
-                            ),
+                          Consumer<PaymentsController>(
+                            builder: (context, controller, child) {
+                              final Valor = controller.totalPagamentos
+                                  .toStringAsFixed(2)
+                                  .replaceAll('.', ',');
+                              return Text(
+                                'R\$ $Valor',
+                                textScaleFactor: textScaleFactor,
+                                style: AppTextStyle.mediumText20.apply(
+                                  color: AppColors.purple,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -153,12 +160,16 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () { print('Botão Depósitos clicado!'); },
+                          onPressed: () {
+                            print('Clicado!');
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.purple.withOpacity(0.06),
                             foregroundColor: AppColors.purple,
                             padding: const EdgeInsets.all(10.0),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
                             elevation: 0,
                           ),
                           child: Column(
@@ -169,9 +180,19 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.arrow_downward, color: AppColors.purple, size: iconSize),
+                                  Icon(
+                                    Icons.arrow_downward,
+                                    color: AppColors.purple,
+                                    size: iconSize,
+                                  ),
                                   const SizedBox(width: 10.0),
-                                  Text('Depósitos', textScaleFactor: textScaleFactor, style: AppTextStyle.smallText.apply(color: AppColors.purple)),
+                                  Text(
+                                    'Depósitos',
+                                    textScaleFactor: textScaleFactor,
+                                    style: AppTextStyle.smallText.apply(
+                                      color: AppColors.purple,
+                                    ),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 4.0),
@@ -182,12 +203,16 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () { print('Botão Transação clicado!'); },
+                          onPressed: () {
+                            print('Botão Transação clicado!');
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.purple.withOpacity(0.06),
                             foregroundColor: AppColors.white,
                             padding: const EdgeInsets.all(12.0),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
                             elevation: 0,
                           ),
                           child: Column(
@@ -198,9 +223,19 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.arrow_upward, color: AppColors.purple, size: iconSize),
+                                  Icon(
+                                    Icons.arrow_upward,
+                                    color: AppColors.purple,
+                                    size: iconSize,
+                                  ),
                                   const SizedBox(width: 10.0),
-                                  Text('Transação', textScaleFactor: textScaleFactor, style: AppTextStyle.smallText.apply(color: AppColors.purple)),
+                                  Text(
+                                    'Transação',
+                                    textScaleFactor: textScaleFactor,
+                                    style: AppTextStyle.smallText.apply(
+                                      color: AppColors.purple,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -234,25 +269,30 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 ),
                 Consumer<PaymentsController>(
                   builder: (context, controller, child) {
-                    print('Consumer: Reconstruindo com estado: ${controller.state.runtimeType}');
-                    print('Consumer: Quantidade de pagamentos: ${controller.pagamentos.length}');
+                    print('${controller.state.runtimeType}');
+                    print('${controller.pagamentos.length}');
                     if (controller.state is PaymentsLoadingState) {
-                      return const Expanded(child: Center(child: CircularProgressIndicator()));
+                      return const Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
                     } else if (controller.state is PaymentsErrorState) {
                       return Expanded(
                         child: Center(
                           child: Text(
                             'Erro ao carregar pagamentos: ${(controller.state as PaymentsErrorState).message}',
-                            style: AppTextStyle.smallText.apply(color: Colors.red),
+                            style: AppTextStyle.smallText.apply(
+                              color: Colors.red,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
                       );
-                    } else if (controller.state is PaymentsSuccessState && controller.pagamentos.isEmpty) {
+                    } else if (controller.state is PaymentsSuccessState &&
+                        controller.pagamentos.isEmpty) {
                       return const Expanded(
                         child: Center(
                           child: Text(
-                            'Nenhum pagamento registrado ainda.',
+                            'Nenhum pagamento.',
                             style: AppTextStyle.smallText,
                           ),
                         ),
@@ -265,18 +305,23 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           itemCount: controller.pagamentos.length,
                           itemBuilder: (context, index) {
                             final pagamento = controller.pagamentos[index];
-                            
-                            final bool isPositive = (pagamento.valorPago ?? 0) > 0; 
-                            final color = isPositive ? Colors.green : Colors.red;
-                            final value = '\$ ${pagamento.valorPago?.toStringAsFixed(2) ?? '0.00'}';
-                            
-                            
+
+                            final bool Positivo =
+                                (pagamento.valorPago ?? 0) > 0;
+                            final color = Positivo ? Colors.green : Colors.red;
+                            final value =
+                                '\$ ${pagamento.valorPago?.toStringAsFixed(2) ?? '0.00'}';
+
                             return ListTile(
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
                               leading: Container(
                                 decoration: const BoxDecoration(
                                   color: AppColors.whitePurple,
-                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
                                 ),
                                 padding: const EdgeInsets.all(8.0),
                                 child: const Icon(Icons.attach_money_outlined),
@@ -286,19 +331,24 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                 style: AppTextStyle.smallText,
                               ),
                               subtitle: Text(
-                                pagamento.dataHoraPagamento ?? 'Data Desconhecida',
+                                pagamento.dataHoraPagamento ??
+                                    'Data Desconhecida',
                                 style: AppTextStyle.smallText13,
                               ),
                               trailing: Text(
                                 value,
-                                style: AppTextStyle.mediumText18.apply(color: color),
+                                style: AppTextStyle.mediumText18.apply(
+                                  color: color,
+                                ),
                               ),
                             );
                           },
                         ),
                       );
                     }
-                    return const Expanded(child: Center(child: Text('Iniciando busca de pagamentos...')));
+                    return const Expanded(
+                      child: Center(child: Text('Iniciando busca')),
+                    );
                   },
                 ),
               ],
