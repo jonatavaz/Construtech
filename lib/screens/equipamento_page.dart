@@ -4,8 +4,8 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
-import 'package:construtech/features/equipamento/equipamento_controller.dart';
-import 'package:construtech/common/models/equipamento.dart';
+import 'package:construtech/controllers/equipamento_controller.dart';
+import 'package:construtech/models/equipamento.dart';
 import 'package:construtech/common/utils/ui_utils.dart';
 
 import 'package:flutter/material.dart';

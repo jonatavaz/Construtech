@@ -4,8 +4,8 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
-import 'package:construtech/features/person/person_controller.dart';
-import 'package:construtech/common/models/fornecedor.dart';
+import 'package:construtech/controllers/person_controller.dart';
+import 'package:construtech/models/fornecedor.dart';
 import 'package:construtech/common/utils/ui_utils.dart';
 
 import 'package:flutter/material.dart';

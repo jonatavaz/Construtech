@@ -6,9 +6,9 @@ import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
-import 'package:construtech/features/home/home_form_controller.dart';
+import 'package:construtech/controllers/home_form_controller.dart';
 import 'package:construtech/features/home/home_form_state.dart';
-import 'package:construtech/features/onboarding/onboarding_page.dart';
+import 'package:construtech/screens/onboarding_page.dart';
 import 'package:construtech/locator.dart';
 import 'package:flutter/material.dart';
 

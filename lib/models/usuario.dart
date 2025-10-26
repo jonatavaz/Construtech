@@ -1,8 +1,8 @@
 import 'dart:ffi';
 
-import 'package:construtech/common/models/contato.dart';
+import 'package:construtech/models/contato.dart';
 
-class Usuario extends Contato{
+class Usuario extends Contato {
   final int? CodUsuaio;
   final int? CodPessoa;
   final String? Senha;
@@ -18,5 +18,5 @@ class Usuario extends Contato{
     this.Senha,
     this.Administrador,
     this.Ativo,
-  }): super(Telefone1: Telefone1, Telefone2: Telefone2, Email: Email);
+  }) : super(Telefone1: Telefone1, Telefone2: Telefone2, Email: Email);
 }

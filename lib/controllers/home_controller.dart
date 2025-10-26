@@ -1,6 +1,6 @@
 import 'package:construtech/common/constants/app_url.dart';
 import 'package:flutter/material.dart';
-import 'package:construtech/common/models/obra.dart';
+import 'package:construtech/models/obra.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
 import 'package:construtech/common/exceptions/app_exceptions.dart';
 import 'dart:developer';
@@ -36,7 +36,7 @@ class HomeController extends ChangeNotifier {
   Future<void> GetObras(BuildContext context) async {
     _changeState(HomeLoadingState());
     final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetObras';
-    
+
     try {
       final dynamic apiResponse = await HelperAPI.getListData(context, url);
 

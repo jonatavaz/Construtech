@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:construtech/common/models/fornecedor.dart';
+import 'package:construtech/models/fornecedor.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
 import 'package:construtech/common/constants/app_url.dart';
 import 'package:construtech/common/exceptions/app_exceptions.dart';

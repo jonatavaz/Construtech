@@ -2,7 +2,6 @@ class Validator {
   Validator._();
 
   static String? validateName(String? value) {
-    //final condition = RegExp(r"[a-zA-Z][a-zA-Z0-9-_]{3,32}");
     if (value!.isEmpty) {
       return "Você deve digitar seu nome.";
     }
@@ -11,7 +10,6 @@ class Validator {
   }
 
   static String? validateEmail(String? value) {
-    //final condition = RegExp(r"^\w{4,}@\w+[.]{1}(com|co.kr|go.kr|net|or.kr)$");
     if (value!.isEmpty) {
       return "Você deve digitar seu e-mail.";
     }

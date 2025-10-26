@@ -3,12 +3,11 @@ import 'package:construtech/common/widgets/primay_button.dart';
 import 'package:flutter/material.dart';
 
 class SignInError {
-   final String message;
-   final String? code;
+  final String message;
+  final String? code;
 
-   SignInError({required this.message, this.code});
+  SignInError({required this.message, this.code});
 }
-
 
 Future<dynamic> customModalBottomSheet(
   BuildContext context,
@@ -16,11 +15,11 @@ Future<dynamic> customModalBottomSheet(
 ) {
   return showModalBottomSheet(
     context: context,
-    isScrollControlled: true, 
+    isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
     ),
-    builder: (BuildContext modalContext) { 
+    builder: (BuildContext modalContext) {
       return Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -30,20 +29,24 @@ Future<dynamic> customModalBottomSheet(
             const Icon(Icons.error, color: Colors.red, size: 40),
             const SizedBox(height: 10),
             Text(
-             
               errorState.message,
               textAlign: TextAlign.center,
-              style: AppTextStyle.mediumText20.copyWith(color: Colors.red.shade800), 
+              style: AppTextStyle.mediumText20.copyWith(
+                color: Colors.red.shade800,
+              ),
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+                horizontal: 32.0,
+              ),
               child: PrimaryButton(
                 text: 'Voltar',
-                onPressed: () => Navigator.pop(modalContext), 
+                onPressed: () => Navigator.pop(modalContext),
               ),
             ),
-            const SizedBox(height: 10)
+            const SizedBox(height: 10),
           ],
         ),
       );

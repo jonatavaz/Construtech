@@ -4,7 +4,7 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
-import 'package:construtech/features/sign_up/sign_up_page.dart';
+import 'package:construtech/screens/sign_up_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +29,7 @@ class OnboardingPage extends StatelessWidget {
             child: PrimaryButton(
               text: "Criar agora",
               onPressed: () {
-                Navigator.pushReplacementNamed(
-                  context,
-                  NamedRoute.signUp,
-                );
+                Navigator.pushReplacementNamed(context, NamedRoute.signUp);
               },
             ),
           ),
@@ -50,7 +47,8 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => Navigator.pushReplacementNamed(context, NamedRoute.signIn),
+      onPressed: () =>
+          Navigator.pushReplacementNamed(context, NamedRoute.signIn),
       child: RichText(
         text: TextSpan(
           children: [

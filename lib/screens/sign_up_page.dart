@@ -8,7 +8,7 @@ import 'package:construtech/common/widgets/custom_buttom_sheet.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
-import 'package:construtech/features/sign_up/sign_up_controller.dart';
+import 'package:construtech/controllers/sign_up_controller.dart';
 import 'package:construtech/features/sign_up/sign_up_state.dart';
 import 'package:construtech/locator.dart';
 import 'package:flutter/gestures.dart';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CustomBottomAppBar extends StatefulWidget {
   final Color? selectedItemColor;
   final List<CustomBottomAppBarItem> children;
-   final int currentIndex;
+  final int currentIndex;
   final ValueChanged<int> onItemSelected;
 
   const CustomBottomAppBar({
@@ -23,7 +23,7 @@ class CustomBottomAppBar extends StatefulWidget {
 class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
   int _selectedItemIndex = 0;
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
@@ -31,15 +31,16 @@ class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: widget.children.map((item) {
           final int itemIndex = widget.children.indexOf(item);
-          // Usa widget.currentIndex que vem do pai
-          final bool isSelected = itemIndex == widget.currentIndex; 
+          final bool isSelected = itemIndex == widget.currentIndex;
 
           return Expanded(
             child: InkWell(
-              onTap: item.onPressed == null ? null : () {
-                widget.onItemSelected(itemIndex); 
-                item.onPressed?.call();
-              },
+              onTap: item.onPressed == null
+                  ? null
+                  : () {
+                      widget.onItemSelected(itemIndex);
+                      item.onPressed?.call();
+                    },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Icon(

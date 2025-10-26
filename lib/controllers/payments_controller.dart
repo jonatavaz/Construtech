@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:construtech/common/models/pagamento.dart';
+import 'package:construtech/models/pagamento.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
 import 'package:construtech/common/constants/app_url.dart';
 import 'dart:developer';

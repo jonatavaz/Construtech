@@ -1,5 +1,5 @@
-import 'package:construtech/features/splash/splash_page.dart';
-import 'splash_state.dart';
+import 'package:construtech/screens/splash_page.dart';
+import '../features/splash/splash_state.dart';
 import 'package:construtech/services/secure_storage.dart';
 import 'package:flutter/widgets.dart';
 

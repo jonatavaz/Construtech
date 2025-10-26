@@ -4,10 +4,10 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
-import 'package:construtech/features/equipamento/equipamento_page.dart';
-import 'package:construtech/features/home/home_controller.dart';
-import 'package:construtech/features/home/home_page_view.dart';
-import 'package:construtech/common/models/obra.dart';
+import 'package:construtech/screens/equipamento_page.dart';
+import 'package:construtech/controllers/home_controller.dart';
+import 'package:construtech/screens/home_page_view.dart';
+import 'package:construtech/models/obra.dart';
 import 'package:construtech/common/utils/ui_utils.dart';
 import 'package:construtech/locator.dart';
 

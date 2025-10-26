@@ -6,7 +6,7 @@ import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
 import 'package:construtech/features/materials/materials_form_state.dart';
-import 'package:construtech/features/payments/forms/payments_form_controller.dart';
+import 'package:construtech/controllers/payments_form_controller.dart';
 import 'package:construtech/features/payments/forms/payments_form_state.dart';
 import 'package:construtech/locator.dart';
 import 'package:decimal/decimal.dart';

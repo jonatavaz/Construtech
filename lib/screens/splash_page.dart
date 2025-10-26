@@ -4,20 +4,17 @@ import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/exceptions/sizes.dart';
-import 'package:construtech/features/onboarding/onboarding_page.dart';
+import 'package:construtech/screens/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
-  
 
   @override
   State<SplashPage> createState() => _SplashPageState();
-  
 }
 
 class _SplashPageState extends State<SplashPage> {
-  
   @override
   void initState() {
     super.initState();
@@ -30,10 +27,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void navigateToOnborarding() {
-    Navigator.pushReplacementNamed(
-      context,
-      NamedRoute.initial,
-    );
+    Navigator.pushReplacementNamed(context, NamedRoute.initial);
   }
 
   @override
@@ -49,7 +43,6 @@ class _SplashPageState extends State<SplashPage> {
           ),
         ),
         child: Image.asset('assets/images/Construtech_logo.png'),
-        
       ),
     );
   }

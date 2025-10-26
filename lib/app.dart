@@ -1,23 +1,23 @@
 import 'package:construtech/common/constants/routes.dart';
-import 'package:construtech/features/equipamento/equipamento_controller.dart';
-import 'package:construtech/features/equipamento/equipamento_page.dart';
-import 'package:construtech/features/home/home_controller.dart';
-import 'package:construtech/features/home/home_form_page.dart';
-import 'package:construtech/features/home/home_page.dart';
-import 'package:construtech/features/home/home_page_view.dart';
-import 'package:construtech/features/materials/materials_controller.dart';
-import 'package:construtech/features/materials/materials_form_page.dart';
-import 'package:construtech/features/materials/materials_page.dart';
-import 'package:construtech/features/onboarding/onboarding_page.dart';
-import 'package:construtech/features/payments/forms/payments_form_page.dart';
-import 'package:construtech/features/payments/payments_controller.dart';
-import 'package:construtech/features/payments/payments_page.dart';
-import 'package:construtech/features/person/forms/person_form_page.dart';
-import 'package:construtech/features/person/person_controller.dart';
+import 'package:construtech/controllers/equipamento_controller.dart';
+import 'package:construtech/screens/equipamento_page.dart';
+import 'package:construtech/controllers/home_controller.dart';
+import 'package:construtech/screens/home_form_page.dart';
+import 'package:construtech/screens/home_page.dart';
+import 'package:construtech/screens/home_page_view.dart';
+import 'package:construtech/controllers/materials_controller.dart';
+import 'package:construtech/screens/materials_form_page.dart';
+import 'package:construtech/screens/materials_page.dart';
+import 'package:construtech/screens/onboarding_page.dart';
+import 'package:construtech/screens/payments_form_page.dart';
+import 'package:construtech/controllers/payments_controller.dart';
+import 'package:construtech/screens/payments_page.dart';
+import 'package:construtech/screens/person_form_page.dart';
+import 'package:construtech/controllers/person_controller.dart';
 import 'package:construtech/features/person/person_page.dart';
 import 'package:construtech/features/sign_in/sign_in_page.dart';
-import 'package:construtech/features/sign_up/sign_up_page.dart';
-import 'package:construtech/features/splash/splash_page.dart';
+import 'package:construtech/screens/sign_up_page.dart';
+import 'package:construtech/screens/splash_page.dart';
 import 'package:construtech/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,15 +52,15 @@ class App extends StatelessWidget {
           NamedRoute.splash: (context) => const SplashPage(),
           NamedRoute.signUp: (context) => const SignUpPage(),
           NamedRoute.signIn: (context) => const SignInPage(),
-          NamedRoute.home: (context) => const HomePageView(), 
+          NamedRoute.home: (context) => const HomePageView(),
           //NamedRoute.payments: (context) => const PaymentsPage(),
           NamedRoute.materials: (context) => const MaterialsPage(),
           NamedRoute.person: (context) => const PersonPage(),
           NamedRoute.homeFormPage: (context) => const HomeFormPage(),
           NamedRoute.materialsFormPage: (context) => const MaterialsFormPage(),
           NamedRoute.paymentsFormPage: (context) => const PaymentsFormPage(),
-          NamedRoute.personFormPage: (context) => const PersonPage(), 
-         },
+          NamedRoute.personFormPage: (context) => const PersonPage(),
+        },
       ),
     );
   }

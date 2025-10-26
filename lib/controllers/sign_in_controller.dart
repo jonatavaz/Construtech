@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:construtech/common/constants/app_url.dart';
-import 'package:construtech/common/models/pessoa.dart';
+import 'package:construtech/models/pessoa.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
-import 'package:construtech/features/sign_in/sign_in_state.dart';
+import 'package:construtech/screens/sign_in_state.dart';
 import 'package:construtech/features/sign_up/sign_up_state.dart'
     hide SignInLoadingState, SignInSuccessState, SignInErrorState;
 import 'package:construtech/services/auth_services.dart';

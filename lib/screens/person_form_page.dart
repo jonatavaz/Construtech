@@ -5,13 +5,12 @@ import 'package:construtech/common/constants/app_text_style.dart';
 import 'package:construtech/common/constants/routes.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
-import 'package:construtech/features/payments/forms/payments_form_controller.dart';
+import 'package:construtech/controllers/payments_form_controller.dart';
 import 'package:construtech/features/payments/forms/payments_form_state.dart';
-import 'package:construtech/features/person/forms/person_form_controller.dart';
+import 'package:construtech/controllers/person_form_controller.dart';
 import 'package:construtech/features/person/forms/person_form_state.dart';
 import 'package:construtech/locator.dart';
 import 'package:flutter/material.dart';
-
 
 class PersonFormPage extends StatefulWidget {
   const PersonFormPage({super.key});
@@ -113,7 +112,7 @@ class _PersonFormPageState extends State<PersonFormPage> {
                   controller: _passwordController,
                   labelText: "Senha ",
                 ),
-                
+
                 CustomTextFormField(
                   controller: _telefoneController,
                   labelText: "Telefone",

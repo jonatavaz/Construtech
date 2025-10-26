@@ -1,5 +1,5 @@
-import 'package:construtech/common/models/pessoa.dart';
-import 'package:construtech/common/models/usuario.dart';
+import 'package:construtech/models/pessoa.dart';
+import 'package:construtech/models/usuario.dart';
 
 abstract class AuthServices {
   Future<Pessoa> signUp({
@@ -7,10 +7,7 @@ abstract class AuthServices {
     required String Email,
     required String Senha,
   });
-  Future<Pessoa> signIn({
-    required String Email,
-    required String Senha,
-  });
+  Future<Pessoa> signIn({required String Email, required String Senha});
 
   Future<void> signOut();
 }
