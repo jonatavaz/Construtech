@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:construtech/models/usuario.dart';
 
 class Pessoa extends Usuario {
@@ -9,7 +7,7 @@ class Pessoa extends Usuario {
   final String? Nascimento;
 
   Pessoa({
-    int? CodUsuaio,
+    int? CodUsuario, 
     required String Email,
     String? Senha,
     bool? Administrador,
@@ -19,10 +17,30 @@ class Pessoa extends Usuario {
     this.CPF,
     this.Nascimento,
   }) : super(
-         CodUsuaio: CodUsuaio,
-         Email: Email,
-         Senha: Senha,
-         Administrador: Administrador,
-         Ativo: Ativo,
-       );
+          CodUsuario: CodUsuario, 
+          Email: Email,
+          Senha: Senha,
+          Administrador: Administrador,
+          Ativo: Ativo,
+        );
+  factory Pessoa.fromJson(Map<String, dynamic> json) {
+    
+  final usuarioData = json['usuario'] as Map<String, dynamic>? ?? {};
+  
+  final contatoData = json['contato'] as Map<String, dynamic>? ?? {};
+
+  return Pessoa(
+    CodUsuario: usuarioData['codUsuario'] as int?,
+    Senha: usuarioData['senha'] as String?,
+    Administrador: usuarioData['administrador'] as bool?,
+    Ativo: usuarioData['ativo'] as bool?,
+    
+    Email: contatoData['email'] as String? ?? 'sem.email@construtech.com', 
+
+    CodPessoa: json['codPessoa'] as int?,
+    Nome: json['nome'] as String?,
+    CPF: json['cpf'] as String?,
+    Nascimento: json['nascimento'] as String?,
+  );
+  }
 }

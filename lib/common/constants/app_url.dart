@@ -1,7 +1,7 @@
 class AppUrl {
-  static const String baseUrl = 'http://191.252.220.13/';
+  static const String baseUrl = 'http://10.0.2.2:5149/';
 
-  static const String construtechApiPath = 'construtechApi';
+  static const String construtechApiPath = 'api';
 
   static const int httpRequestTimeout = 30;
 

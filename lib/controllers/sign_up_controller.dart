@@ -42,7 +42,7 @@ class SignUpController extends ChangeNotifier {
     print('body: $body');
 
     try {
-      await HelperAPI.postData(context, url, body);
+      //await HelperAPI.postData(context, url, body);
       _changeState(SignInSuccessState());
     } catch (e) {
       _changeState(SignInErrorState(e.toString()));

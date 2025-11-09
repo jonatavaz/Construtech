@@ -41,7 +41,8 @@ class PaymentsController extends ChangeNotifier {
         '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetListPagamentos';
 
     try {
-      final dynamic apiResponse = await HelperAPI.getListData(context, url);
+      //await HelperAPI.getListData(context, url)
+      final dynamic apiResponse = false;
 
       if (apiResponse != null && apiResponse is List<dynamic>) {
         _pagamentos = apiResponse.map((item) {

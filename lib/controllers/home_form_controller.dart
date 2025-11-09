@@ -1,9 +1,9 @@
-import 'dart:math';
-
+import 'dart:developer';
 import 'package:construtech/common/constants/app_url.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
+import 'package:construtech/controllers/web_result.dart';
 import 'package:construtech/features/home/home_form_state.dart';
-import 'package:construtech/services/secure_storage.dart';
+import 'package:construtech/common/utils/ui_utils.dart'; 
 import 'package:flutter/material.dart';
 
 class HomeFormController extends ChangeNotifier {
@@ -20,7 +20,7 @@ class HomeFormController extends ChangeNotifier {
 
   Future<void> InsertObra({
     required BuildContext context,
-    required String NomeCliente,
+    required int CodCliente, 
     required String NomeObra,
     required String Endereco,
     required String TipoObra,
@@ -28,25 +28,37 @@ class HomeFormController extends ChangeNotifier {
     required String EstagioAtual,
     required String? Detalhes,
   }) async {
-    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/InsertObra';
-    print('URL final da API: $url');
+    _changeState(HomeFormLoadingState());
+
+    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Obra/inserirObra';
+    log('URL final da API: $url');
 
     final Map<String, dynamic> body = {
-      "NomeCliente": NomeCliente,
-      "NomeObra": NomeObra,
+      "codCliente": CodCliente,
+      "Nome": NomeObra,
       "Endereco": Endereco,
-      "Tipo": TipoObra,
+      "Tipo": TipoObra, 
       "PrazoExecucao": PrazoExecucao,
       "EstagioAtual": EstagioAtual,
       "Detalhes": Detalhes,
     };
-    print('body: $body');
+    log('Enviando body: $body');
 
     try {
-      await HelperAPI.postData(context, url, body);
-      _changeState(HomeFormSuccessState());
+      final WebResult<int> result = await HelperAPI.post<int>(
+        url,
+        body,
+      );
+
+      if (result.isSuccess) {
+        _changeState(HomeFormSuccessState());
+        
+      } else {
+        _changeState(HomeFormErrorState(result.message ?? "Erro ao salvar a obra."));
+      }
     } catch (e) {
-      _changeState(HomeFormErrorState(e.toString()));
+      log("Erro inesperado no InsertObra: $e");
+      _changeState(HomeFormErrorState("Ocorreu um erro inesperado: $e"));
     }
   }
 }

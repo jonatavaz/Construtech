@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:construtech/models/contato.dart';
 
 class Usuario extends Contato {
-  final int? CodUsuaio;
+  final int? CodUsuario;
   final int? CodPessoa;
   final String? Senha;
   final bool? Administrador;
@@ -13,7 +13,7 @@ class Usuario extends Contato {
     String? Telefone1,
     String? Telefone2,
     required String Email,
-    this.CodUsuaio,
+    this.CodUsuario,
     this.CodPessoa,
     this.Senha,
     this.Administrador,

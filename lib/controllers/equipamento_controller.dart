@@ -40,7 +40,8 @@ class EquipamentoController extends ChangeNotifier {
         '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetObraEquipamentos/$codObra';
 
     try {
-      final dynamic apiResponse = await HelperAPI.getListData(context, url);
+      //await HelperAPI.getListData(context, url)
+      final dynamic apiResponse = false;
 
       if (apiResponse != null && apiResponse is List<dynamic>) {
         _equipamentos = apiResponse.map((item) {

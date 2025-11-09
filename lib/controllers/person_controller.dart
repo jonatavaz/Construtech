@@ -41,7 +41,8 @@ class PersonController extends ChangeNotifier {
     log('PersonController.fetchFornecedores: Chamando URL: $url');
 
     try {
-      final dynamic apiResponse = await HelperAPI.getListData(context, url);
+      //await HelperAPI.getListData(context, url)
+      final dynamic apiResponse = false;
 
       if (apiResponse != null && apiResponse is List<dynamic>) {
         _fornecedores = apiResponse.map((item) {

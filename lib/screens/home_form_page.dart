@@ -2,15 +2,21 @@ import 'dart:developer';
 
 import 'package:construtech/common/constants/app_colors.dart';
 import 'package:construtech/common/constants/app_text_style.dart';
+import 'package:construtech/common/constants/app_url.dart';
 import 'package:construtech/common/constants/routes.dart';
+import 'package:construtech/common/utils/ui_utils.dart';
+import 'package:construtech/common/widgets/cliente_dropdown_form_field.dart';
 import 'package:construtech/common/widgets/custom_text_form_field.dart';
 import 'package:construtech/common/widgets/password_form_field.dart';
 import 'package:construtech/common/widgets/primay_button.dart';
 import 'package:construtech/controllers/home_form_controller.dart';
 import 'package:construtech/features/home/home_form_state.dart';
+import 'package:construtech/models/cliente.dart';
 import 'package:construtech/screens/onboarding_page.dart';
 import 'package:construtech/locator.dart';
 import 'package:flutter/material.dart';
+import 'package:construtech/common/utils/HelperAPI.dart';
+import 'package:construtech/controllers/web_result.dart';
 
 class HomeFormPage extends StatefulWidget {
   const HomeFormPage({super.key});
@@ -21,7 +27,9 @@ class HomeFormPage extends StatefulWidget {
 
 class _HomeFormPageState extends State<HomeFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nomeClienteController = TextEditingController();
+  List<Cliente> _listaClientes = [];
+  Cliente? _clienteSelecionado;
+  bool _isLoadingClientes = true;
   final _nomeObraController = TextEditingController();
   final _enderecoController = TextEditingController();
   final _tipoObraController = TextEditingController();
@@ -34,6 +42,9 @@ class _HomeFormPageState extends State<HomeFormPage> {
   @override
   void initState() {
     super.initState();
+
+    _carregarClientes();
+
     _controller.addListener(() {
       if (_controller.state is HomeFormLoadingState) {
         showDialog(
@@ -44,18 +55,56 @@ class _HomeFormPageState extends State<HomeFormPage> {
         );
       }
       if (_controller.state is HomeFormSuccessState) {
-        Navigator.pushReplacementNamed(context, NamedRoute.home);
+        Navigator.pop(context);
+        Navigator.pop(context);
       }
       if (_controller.state is HomeFormErrorState) {
         final error = (_controller.state as HomeFormErrorState).message;
         Navigator.pop(context);
+        showAlerts(context, error);
       }
     });
   }
 
+  Future<void> _carregarClientes() async {
+    try {
+      final url =
+          '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Cliente/getClientes';
+
+      log("Buscando clientes em: $url");
+
+      final result = await HelperAPI.get<List<dynamic>>(url);
+
+      if (result.isSuccess && result.data != null) {
+        List<Cliente> clientes = result.data!
+            .map((json) => Cliente.fromJson(json as Map<String, dynamic>))
+            .toList();
+      
+        setState(() {
+          _listaClientes = clientes;
+          _isLoadingClientes = false;
+        });
+      } else {
+        
+        setState(() {
+          _isLoadingClientes = false;
+        });
+        if (mounted) {
+          showAlerts(context, result.message ?? "Erro ao carregar clientes.");
+        }
+      }
+    } catch (e) {
+      setState(() {
+        _isLoadingClientes = false;
+      });
+      if (mounted) {
+        showAlerts(context, "Erro de conexão: $e");
+      }
+    }
+  }
+
   @override
   void dispose() {
-    _nomeClienteController.dispose();
     _nomeObraController.dispose();
     _enderecoController.dispose();
     _tipoObraController.dispose();
@@ -84,10 +133,22 @@ class _HomeFormPageState extends State<HomeFormPage> {
             key: _formKey,
             child: Column(
               children: [
-                CustomTextFormField(
-                  controller: _nomeClienteController,
-                  labelText: "Nome do Cliente",
-                  hintText: "Nome Sobrenome",
+                CustomDropdownFormField<Cliente>(
+                  labelText: "Cliente",
+                  hintText: "Selecione um cliente",
+                  isLoading: _isLoadingClientes, 
+                  value: _clienteSelecionado, 
+                  items: _listaClientes, 
+                  validator: (value) =>
+                      value == null ? 'Selecione um cliente.' : null,
+
+                  itemBuilderText: (Cliente cliente) => cliente.nome,
+
+                  onChanged: (Cliente? novoValor) {
+                    setState(() {
+                      _clienteSelecionado = novoValor;
+                    });
+                  },
                 ),
                 CustomTextFormField(
                   controller: _nomeObraController,
@@ -138,7 +199,7 @@ class _HomeFormPageState extends State<HomeFormPage> {
                 if (valid) {
                   _controller.InsertObra(
                     context: context,
-                    NomeCliente: _nomeClienteController.text,
+                    CodCliente: _clienteSelecionado!.codCliente,
                     NomeObra: _nomeObraController.text,
                     Endereco: _enderecoController.text,
                     TipoObra: _tipoObraController.text,

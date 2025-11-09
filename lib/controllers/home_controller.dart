@@ -1,4 +1,5 @@
 import 'package:construtech/common/constants/app_url.dart';
+import 'package:construtech/controllers/web_result.dart';
 import 'package:flutter/material.dart';
 import 'package:construtech/models/obra.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
@@ -35,26 +36,24 @@ class HomeController extends ChangeNotifier {
 
   Future<void> GetObras(BuildContext context) async {
     _changeState(HomeLoadingState());
-    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetObras';
+    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Obra/getObras';
 
     try {
-      final dynamic apiResponse = await HelperAPI.getListData(context, url);
+      final WebResult<List<dynamic>> result = await HelperAPI.get<List<dynamic>>(url);
 
-      if (apiResponse != null && apiResponse is List<dynamic>) {
-        _obras = apiResponse.map((item) {
-          if (item is Map<String, dynamic>) {
-            return Obra.fromJson(item);
-          } else {
-            throw Exception('Erro no map');
-          }
-        }).toList();
+      if (result.isSuccess && result.data != null) {
+        
+        _obras = result.data!
+            .map((item) => Obra.fromJson(item as Map<String, dynamic>))
+            .toList();
 
         _changeState(HomeSuccessState(_obras));
       } else {
-        throw Exception('Erro no formato da $apiResponse');
+        _changeState(HomeErrorState(result.message ?? "Não foi possível carregar as obras."));
       }
     } catch (e) {
-      _changeState(HomeErrorState('Erro ao obras: ${e.toString()}'));
+      log("Exceção no GetObras: $e");
+      _changeState(HomeErrorState('Erro de conexão: ${e.toString()}'));
     }
   }
 }

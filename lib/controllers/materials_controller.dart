@@ -40,7 +40,8 @@ class MaterialsController extends ChangeNotifier {
         '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetListMateriais';
 
     try {
-      final dynamic apiResponse = await HelperAPI.getListData(context, url);
+      //await HelperAPI.getListData(context, url)
+      final dynamic apiResponse = false;
       print('Oi 1: $apiResponse');
 
       if (apiResponse != null && apiResponse is List<dynamic>) {
