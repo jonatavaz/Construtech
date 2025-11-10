@@ -20,19 +20,30 @@ class Pagamento {
   });
 
   factory Pagamento.fromJson(Map<String, dynamic> json) {
+  try {
     return Pagamento(
-      codPagamento: json['codPagamento'] as int?,
-      codFormaPagamento: json['codFormaPagamento'] as int?,
-      codObra: json['codObra'] as int?,
+      codPagamento: json['codPagamento'] as int? ?? 0,
+      codFormaPagamento: json['codFormaPagamento'] as int? ?? 0,
+      codObra: json['codObra'] as int? ?? 0,
+      
       valorPago: (json['valorPago'] is num)
           ? (json['valorPago'] as num).toDouble()
-          : null,
-      dataHoraPagamento: json['dataHoraPagamento'] as String?,
-      nomeObra: json['nome'] as String?,
-      formaPagamento: json['formaPagamento'] as String?,
-      obra: json['obra'],
+          : 0.0,
+      
+      dataHoraPagamento: json['dataHora_Pagamento'] as String?, 
+
+      nomeObra: json['nomeObra'] as String? ?? 'Obra não informada',
+      formaPagamento: json['formaPagamento'] as String? ?? 'Forma não informada',
+      
+      obra: null, 
     );
+  } catch (e) {
+      return Pagamento(
+        codPagamento: -1,
+        nomeObra: 'Erro de parsing',
+      );
   }
+}
 
   Map<String, dynamic> toJson() {
     return {

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:construtech/common/constants/app_url.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
+import 'package:construtech/controllers/web_result.dart';
 import 'package:construtech/features/person/forms/person_form_state.dart';
 import 'package:construtech/features/sign_up/sign_up_state.dart';
 import 'package:construtech/services/auth_services.dart';
@@ -21,7 +22,7 @@ class PersonFormController extends ChangeNotifier {
   }
 
   Future<void> CadastroFornecedor({
-    required BuildContext context,
+    required BuildContext context, // Mantido, pois sua página o envia
     required String Historico,
     required String Avaliacao,
     required String Nome,
@@ -31,24 +32,34 @@ class PersonFormController extends ChangeNotifier {
     required String Email,
     required String Senha,
   }) async {
-    
-    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/InsertFornecedor';
-    print('URL final da API: $url');
+    _changeState(PersonFormLoadingState());
+
+    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Fornecedor/inserirFornecedor';
+    log('URL final da API: $url');
 
     final Map<String, dynamic> body = {
-      "Historico": Historico,
-      "Avaliacao": Avaliacao,
-      "Nome": Nome, "CPF": CPF, "Nascimento": Nascimento,
-      "Senha": Senha,
-      "Telefone": Telefone, "Email": Email,
+      "historico": Historico,
+      "avaliacao": Avaliacao,
+      "nome": Nome,
+      "cpf": CPF,
+      "nascimento": Nascimento,
+      "senha": Senha,
+      "telefone": Telefone,
+      "email": Email,
     };
-    print('body: $body');
+    log('Enviando body: $body');
 
     try {
-      //await HelperAPI.postData(context, url, body);
-      _changeState(PersonFormSuccessState());
+      final WebResult<int> result = await HelperAPI.post<int>(url, body);
+
+      if (result.isSuccess) {
+        _changeState(PersonFormSuccessState());
+      } else {
+        _changeState(PersonFormErrorState(result.message ?? "Erro ao salvar o fornecedor."));
+      }
     } catch (e) {
-      _changeState(PersonFormErrorState(e.toString()));
+      log("Erro inesperado no CadastroFornecedor: $e");
+      _changeState(PersonFormErrorState("Ocorreu um erro inesperado: $e"));
     }
   }
 }

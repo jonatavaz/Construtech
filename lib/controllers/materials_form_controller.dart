@@ -30,28 +30,26 @@ class MaterialsFormController extends ChangeNotifier {
   }) async {
     _changeState(MaterialsFormLoadingState());
 
-    // ATENÇÃO: Verifique se este é o endpoint correto no C#
     final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/PedidoMaterial/inserirPedidoMaterial'; 
-    //log('URL final da API: $url');
+
 
     final Map<String, dynamic> body = {
       "Quantidade": Quantidade,
       "CodObra": CodObra,
       "CodMaterial": CodMaterial,
     };
-    ///log('Enviando body: $body');
+
 
     try {
-      // Use o HelperAPI.post
+
       final WebResult<int> result = await HelperAPI.post<int>(url, body);
 
       if (result.isSuccess) {
-        _changeState(MaterialsFormSuccessState()); // Use um estado de sucesso
+        _changeState(MaterialsFormSuccessState());
       } else {
         _changeState(MaterialsFormErrorState(result.message ?? "Erro ao salvar."));
       }
     } catch (e) {
-      //log("Erro inesperado no InsertPedidoMaterial: $e");
        _changeState(MaterialsFormErrorState(e.toString()));
     }
   }

@@ -1,3 +1,4 @@
+import 'package:construtech/controllers/web_result.dart';
 import 'package:flutter/material.dart';
 import 'package:construtech/models/fornecedor.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
@@ -34,35 +35,28 @@ class PersonController extends ChangeNotifier {
   }
 
   Future<void> fetchFornecedores(BuildContext context) async {
-    _changeState(PersonLoadingState());
+   _changeState(PersonLoadingState());
 
     final url =
-        '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetListFornecedores';
+        '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Fornecedor/getFornecedores';
     log('PersonController.fetchFornecedores: Chamando URL: $url');
 
     try {
-      //await HelperAPI.getListData(context, url)
-      final dynamic apiResponse = false;
+      final WebResult<List<dynamic>> result = await HelperAPI.get<List<dynamic>>(url);
 
-      if (apiResponse != null && apiResponse is List<dynamic>) {
-        _fornecedores = apiResponse.map((item) {
-          if (item is Map<String, dynamic>) {
-            return Fornecedor.fromJson(item);
-          } else {
-            throw Exception(
-              'Item da lista de fornecedores não é um mapa válido.',
-            );
-          }
-        }).toList();
+      if (result.isSuccess && result.data != null) {
+        
+        _fornecedores = result.data!
+            .map((item) => Fornecedor.fromJson(item as Map<String, dynamic>))
+            .toList();
 
         _changeState(PersonSuccessState(_fornecedores));
+      } else {
+        _changeState(PersonErrorState(result.message ?? "Não foi possível carregar os fornecedores."));
       }
     } catch (e) {
-      _changeState(
-        PersonErrorState(
-          'Erro desconhecido ao buscar fornecedores: ${e.toString()}',
-        ),
-      );
+      log("Exceção no fetchFornecedores: $e");
+      _changeState(PersonErrorState('Erro de conexão: ${e.toString()}'));
     }
   }
 }

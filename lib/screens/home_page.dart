@@ -80,13 +80,6 @@ class _HomePageState extends State<HomePage> {
                         color: AppColors.white,
                       ),
                     ),
-                    // Text(
-                    //   'Jonata Vaz',
-                    //   textScaleFactor: textScaleFactor,
-                    //   style: AppTextStyle.mediumText20.apply(
-                    //     color: AppColors.white,
-                    //   ),
-                    // ),
                   ],
                 ),
                 Container(

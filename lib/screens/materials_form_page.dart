@@ -32,8 +32,6 @@ class MaterialsFormPage extends StatefulWidget {
 class _MaterialsFormPageState extends State<MaterialsFormPage> {
   final _formKey = GlobalKey<FormState>();
   final _quantidadeController = TextEditingController();
-  //final _nomeController = TextEditingController();
-  //final _nomeObraController = TextEditingController();
 
   List<Obra> _listaObras = [];
   List<model.Material> _listaMateriais = [];
@@ -53,16 +51,15 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
 
     _controller.addListener(() {
       if (_controller.state is MaterialsFormLoadingState) {
-        // ... (seu código de loading) ...
       }
       if (_controller.state is MaterialsFormSuccessState) {
-        Navigator.pop(context); // Fecha o loading
-        Navigator.pop(context); // Volta para a tela anterior
+        Navigator.pop(context); 
+        Navigator.pop(context); 
       }
       if (_controller.state is MaterialsFormErrorState) {
         final error = (_controller.state as MaterialsFormErrorState).message;
-        Navigator.pop(context); // Fecha o loading
-        showAlerts(context, error); // Mostra o erro
+        Navigator.pop(context); 
+        showAlerts(context, error); 
       }
     });
   }
@@ -86,11 +83,10 @@ class _MaterialsFormPageState extends State<MaterialsFormPage> {
     }
   }
 
-  // (Certifique-se que o import no topo do arquivo foi alterado para '... as model;')
 
 Future<void> _carregarMateriais() async {
   try {
-    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Material/getMateriais'; // Use a URL correta
+    final url = '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Material/getMateriais';
     final result = await HelperAPI.get<List<dynamic>>(url);
     if (result.isSuccess && result.data != null) {
       setState(() {
@@ -110,8 +106,6 @@ Future<void> _carregarMateriais() async {
   @override
   void dispose() {
     _quantidadeController.dispose();
-    //_nomeController.dispose();
-    //_nomeObraController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -184,7 +178,7 @@ Future<void> _carregarMateriais() async {
                     _formKey.currentState != null &&
                     _formKey.currentState!.validate();
                 if (valid) {
-                  _controller.InsertPedidoMaterial( // Renomeei para clareza
+                  _controller.InsertPedidoMaterial(
                     context: context,
                     Quantidade: int.tryParse(_quantidadeController.text) ?? 0,
                     CodObra: _obraSelecionada!.codObra,

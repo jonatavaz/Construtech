@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-// 1. CONVENÇÃO: O nome da classe deve ser singular (Material)
-//    para representar um único item.
-class Material { // ANTIGO: Materials
+class Material { 
   final int codMaterial;
   final String nome;
   final String? descricao;
@@ -19,31 +17,22 @@ class Material { // ANTIGO: Materials
     required this.unidade,
   });
 
-  // 2. CORREÇÃO: Aplicando o factory seguro
-  factory Material.fromJson(Map<String, dynamic> json) { // ANTIGO: Materials.fromJson
+  factory Material.fromJson(Map<String, dynamic> json) {
     try {
-      return Material( // ANTIGO: Materials
-        // Use 'as int? ?? 0' para segurança contra nulos
+      return Material(
         codMaterial: json['codMaterial'] as int? ?? 0,
         
-        // Use 'as String? ?? '...' para segurança
         nome: json['nome'] as String? ?? 'Nome indisponível',
         
-        // Este já estava seguro
         descricao: json['descricao'] as String?,
         
         codObra: json['codObra'] as int? ?? 0,
-        
-        // ATENÇÃO: Verifique se a chave é 'nomeObra' ou 'nome'
-        // (Baseado no seu modelo Obra, a API C# pode enviar 'nome' 
-        // e o DTO C# 'nomeObra', então o JSON 'nomeObra' pode estar correto)
         nomeObra: json['nomeObra'] as String? ?? 'Obra indisponível', 
         
         unidade: json['unidade'] as int? ?? 0,
       );
     } catch (e) {
       log("Erro ao processar Material.fromJson: $e. JSON: $json");
-      // Retorna um objeto de erro padrão
       return Material(
         codMaterial: -1,
         nome: 'Erro ao carregar',

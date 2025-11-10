@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:construtech/models/pagamento.dart';
 import 'package:construtech/common/utils/HelperAPI.dart';
 import 'package:construtech/common/constants/app_url.dart';
+import 'package:construtech/controllers/web_result.dart';
 import 'dart:developer';
 
 abstract class PaymentsState {}
@@ -37,36 +38,27 @@ class PaymentsController extends ChangeNotifier {
 
   Future<void> GetListPagamentos(BuildContext context) async {
     _changeState(PaymentsLoadingState());
+    
     final url =
-        '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/GetListPagamentos';
+        '${AppUrl.baseUrl}${AppUrl.construtechApiPath}/Pagamento/getPagamentos';
+    log("Buscando pagamentos em: $url");
 
     try {
-      //await HelperAPI.getListData(context, url)
-      final dynamic apiResponse = false;
+      final WebResult<List<dynamic>> result = await HelperAPI.get<List<dynamic>>(url);
 
-      if (apiResponse != null && apiResponse is List<dynamic>) {
-        _pagamentos = apiResponse.map((item) {
-          if (item is Map<String, dynamic>) {
-            return Pagamento.fromJson(item);
-          } else {
-            throw Exception(
-              'Item da lista de pagamentos não é um mapa válido.',
-            );
-          }
-        }).toList();
+      if (result.isSuccess && result.data != null) {
+        
+        _pagamentos = result.data!
+            .map((item) => Pagamento.fromJson(item as Map<String, dynamic>))
+            .toList();
 
         _changeState(PaymentsSuccessState(_pagamentos));
       } else {
-        throw Exception(
-          'Formato de resposta inesperado ao buscar pagamentos $apiResponse',
-        );
+        _changeState(PaymentsErrorState(result.message ?? "Não foi possível carregar os pagamentos."));
       }
     } catch (e) {
-      _changeState(
-        PaymentsErrorState(
-          'Erro desconhecido ao buscar pagamentos: ${e.toString()}',
-        ),
-      );
+      log("Exceção no GetListPagamentos: $e");
+      _changeState(PaymentsErrorState('Erro de conexão: ${e.toString()}'));
     }
   }
 }
